@@ -1,0 +1,28 @@
+{
+  "metrics": [
+    {
+      "value": 8000,
+      "suffix": "+",
+      "label": "Data Rows Processed Daily",
+      "icon": "📊"
+    },
+    {
+      "value": 2,
+      "suffix": "",
+      "label": "Reports Fully Automated",
+      "icon": "🤖"
+    },
+    {
+      "value": 15,
+      "suffix": "+",
+      "label": "Hours Saved Per Week",
+      "icon": "⏱️"
+    },
+    {
+      "value": 100,
+      "suffix": "%",
+      "label": "Hands-Free Automation",
+      "icon": "🚀"
+    }
+  ]
+}
