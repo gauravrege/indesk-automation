@@ -1,89 +1,142 @@
 'use client';
 
-import { motion } from 'framer-motion';
-
-export function TimelineCard({ log, index }) {
-  // Alternate card styles to match the bento UI in the video
-  const isDark = index % 3 === 0;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className={`group flex-1 flex flex-col p-8 md:p-10 rounded-[2rem] shadow-sm transition-transform duration-500 hover:scale-[1.02] ${
-        isDark 
-          ? 'bg-[#111] text-white' 
-          : 'bg-white border border-gray-100 text-[#1c1c1e]'
-      }`}
-    >
-      {/* Header */}
-      <div className="flex justify-between items-start mb-16">
-        <div>
-          <h3 className={`text-2xl md:text-4xl font-normal tracking-tight mb-2 ${isDark ? 'text-white' : 'text-black'}`}>
-            {log.title}
-          </h3>
-          <p className={isDark ? 'text-gray-400' : 'text-gray-500'}>
-            Week {log.week} • {log.date}
-          </p>
-        </div>
-        
-        {/* Decorative Icon Circle */}
-        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isDark ? 'bg-white/10' : 'bg-gray-100'}`}>
-          <span className="text-xl">↗</span>
-        </div>
-      </div>
-
-      {/* Tags */}
-      {log.tags && log.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-8">
-          {log.tags.map((tag, tagIdx) => (
-            <span
-              key={tagIdx}
-              className={`px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wider ${
-                isDark ? 'bg-white/10 text-gray-300' : 'bg-gray-100 text-gray-600'
-              }`}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* Rendered HTML Markdown Content */}
-      <div
-        className={`flex-1 ${
-          isDark 
-            ? '[&_h2]:text-white [&_p]:text-gray-400 [&_strong]:text-gray-200 [&_blockquote]:border-white/20' 
-            : '[&_h2]:text-black [&_p]:text-gray-600 [&_strong]:text-gray-900 [&_blockquote]:border-black/10'
-        } [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-3 [&_h2]:mt-6 [&_ul]:list-none [&_ul]:space-y-3 [&_li]:relative [&_li]:pl-4 before:[&_li]:content-['•'] before:[&_li]:absolute before:[&_li]:left-0 before:[&_li]:text-gray-400 [&_p]:text-base [&_p]:leading-relaxed [&_p]:mb-4 [&_blockquote]:border-l-4 [&_blockquote]:pl-5 [&_blockquote]:italic [&_blockquote]:my-6 [&_img]:rounded-2xl [&_img]:mt-6 [&_img]:w-full`}
-        dangerouslySetInnerHTML={{ __html: log.htmlContent }}
-      />
-    </motion.div>
-  );
-}
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Timeline({ logs = [] }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   if (!logs || logs.length === 0) return null;
 
-  return (
-    <section id="gallery" className="py-20 md:py-32 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-16 md:mb-24 text-center">
-          <h2 className="text-4xl md:text-6xl font-medium tracking-tight text-[#1c1c1e] mb-4">
-            Making Progress Visible
-          </h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-            Turning invisible backend engineering and automation signals into meaningful UI elements and business value.
-          </p>
-        </div>
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev === logs.length - 1 ? 0 : prev + 1));
+  };
 
-        {/* Responsive CSS Grid (Bento/Card Layout) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {logs.map((log, index) => (
-            <TimelineCard key={log.week ?? index} log={log} index={index} />
-          ))}
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev === 0 ? logs.length - 1 : prev - 1));
+  };
+
+  const currentLog = logs[currentIndex];
+
+  return (
+    <section id="gallery" className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-[#f5f4f2] overflow-hidden">
+      <div className="max-w-6xl mx-auto">
+        
+        {/* Slider Container matching video aesthetic */}
+        <div className="bg-[#dfdcd9] rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 relative shadow-sm">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mb-16">
+            
+            {/* Left Side: Title and Buttons */}
+            <div className="col-span-1 lg:col-span-5 flex flex-col justify-between">
+              <div>
+                <motion.h2 
+                  key={`title-${currentIndex}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight text-[#1c1c1e] mb-4"
+                >
+                  Week {currentLog.week}
+                </motion.h2>
+                <motion.p
+                  key={`date-${currentIndex}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                  className="text-lg md:text-xl text-gray-600 mb-2"
+                >
+                  {currentLog.title}
+                </motion.p>
+                {currentLog.date && (
+                   <motion.p
+                   key={`realdate-${currentIndex}`}
+                   initial={{ opacity: 0 }}
+                   animate={{ opacity: 1 }}
+                   transition={{ duration: 0.5, delay: 0.2 }}
+                   className="text-sm uppercase tracking-widest text-gray-500 font-semibold"
+                 >
+                   {currentLog.date}
+                 </motion.p>
+                )}
+              </div>
+
+              {/* Navigation Buttons (Desktop) */}
+              <div className="hidden lg:flex gap-4 mt-auto pt-12">
+                <button 
+                  onClick={prevSlide}
+                  className="w-12 h-12 rounded-full border border-gray-400 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-all"
+                >
+                  <span className="sr-only">Previous</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M15 18l-6-6 6-6" /></svg>
+                </button>
+                <button 
+                  onClick={nextSlide}
+                  className="w-12 h-12 rounded-full border border-gray-400 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-all"
+                >
+                  <span className="sr-only">Next</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 18l6-6-6-6" /></svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Right Side: Markdown Content */}
+            <div className="col-span-1 lg:col-span-7 relative min-h-[300px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`content-${currentIndex}`}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  className="text-[#1c1c1e] text-base md:text-lg leading-relaxed"
+                >
+                  <div
+                    className="[&_h2]:text-xl md:[&_h2]:text-2xl [&_h2]:font-medium [&_h2]:mb-4 [&_h2]:mt-8 first:[&_h2]:mt-0 [&_ul]:list-none [&_ul]:space-y-4 [&_li]:relative [&_li]:pl-6 before:[&_li]:content-[''] before:[&_li]:absolute before:[&_li]:left-0 before:[&_li]:top-2.5 before:[&_li]:w-1.5 before:[&_li]:h-1.5 before:[&_li]:bg-black before:[&_li]:rounded-full [&_p]:mb-5 [&_blockquote]:border-l-2 [&_blockquote]:border-black/30 [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:my-8 [&_img]:rounded-2xl [&_img]:mt-8 [&_img]:w-full [&_img]:shadow-sm [&_pre]:bg-[#f5f4f2] [&_pre]:p-5 md:[&_pre]:p-6 [&_pre]:rounded-2xl [&_pre]:overflow-x-auto [&_pre]:max-w-[calc(100vw-6rem)] md:[&_pre]:max-w-full [&_pre]:border [&_pre]:border-black/5 [&_pre]:shadow-inner [&_code]:text-sm"
+                    dangerouslySetInnerHTML={{ __html: currentLog.htmlContent }}
+                  />
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Navigation Buttons (Mobile) */}
+              <div className="flex lg:hidden gap-4 mt-12">
+                <button onClick={prevSlide} className="w-12 h-12 rounded-full border border-gray-400 flex items-center justify-center hover:bg-black hover:text-white transition-all">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M15 18l-6-6 6-6" /></svg>
+                </button>
+                <button onClick={nextSlide} className="w-12 h-12 rounded-full border border-gray-400 flex items-center justify-center hover:bg-black hover:text-white transition-all">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 18l6-6-6-6" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Progress Timeline Slider Line */}
+          <div className="relative mt-8 md:mt-16 flex items-center w-full h-12">
+            {/* The horizontal line */}
+            <div className="absolute left-4 right-4 h-[1px] bg-black/10" />
+            
+            {/* The dots */}
+            <div className="absolute left-0 right-0 flex justify-between px-4">
+              {logs.map((_, idx) => (
+                <div 
+                  key={idx} 
+                  className="relative flex items-center justify-center w-6 h-6 cursor-pointer group" 
+                  onClick={() => setCurrentIndex(idx)}
+                >
+                  <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${idx === currentIndex ? 'bg-black' : 'bg-black/20 group-hover:bg-black/50'}`} />
+                  {/* Active Ring */}
+                  {idx === currentIndex && (
+                    <motion.div
+                      layoutId="activeRing"
+                      className="absolute inset-0 rounded-full border-2 border-black"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

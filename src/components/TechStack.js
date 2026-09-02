@@ -13,7 +13,7 @@ const techStack = [
 
 export default function TechStack() {
   return (
-    <section className="bg-[#e9e6e4] py-24 md:py-32 px-4 sm:px-6 lg:px-8 rounded-t-[3rem]">
+    <section className="bg-[#f5f4f2] py-24 md:py-32 px-4 sm:px-6 lg:px-8 rounded-t-[3rem]">
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-[#1c1c1e] mb-16">
           Designed for Scale
