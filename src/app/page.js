@@ -2,7 +2,7 @@ import Hero from "@/components/Hero";
 import ImpactDashboard from "@/components/ImpactDashboard";
 import Timeline from "@/components/Timeline";
 import TechStack from "@/components/TechStack";
-import CodeHighlight from "@/components/CodeHighlight";
+import TaskMonitor from "@/components/TaskMonitor";
 import Footer from "@/components/Footer";
 import { getAllLogs, getLogContent } from "@/lib/markdown";
 
@@ -30,7 +30,7 @@ export default async function Home() {
       <ImpactDashboard />
       <Timeline logs={logsWithHtml} />
       <TechStack />
-      <CodeHighlight />
+      <TaskMonitor />
       <Footer />
     </main>
   );
