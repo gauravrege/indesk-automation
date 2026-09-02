@@ -22,8 +22,58 @@ export default function Timeline({ logs = [] }) {
     <section id="gallery" className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-[#f5f4f2] overflow-hidden">
       <div className="max-w-6xl mx-auto">
         
+        {/* Projects Section */}
+        <div className="mb-24">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-[#1c1c1e] mb-4">
+              Project Portfolio
+            </h2>
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              Select a project to view its detailed weekly engineering log.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {logs.map((log, idx) => (
+              <motion.div
+                key={`project-${idx}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                onClick={() => {
+                  setCurrentIndex(idx);
+                  document.getElementById('log-slider')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }}
+                className="group cursor-pointer flex flex-col justify-between p-8 rounded-3xl bg-white border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div>
+                  <div className="flex justify-between items-start mb-6">
+                    <span className="px-3 py-1 text-xs font-semibold text-gray-500 bg-gray-100 rounded-full">
+                      Week {log.week}
+                    </span>
+                    <span className="text-gray-300 group-hover:text-black transition-colors">↗</span>
+                  </div>
+                  <h3 className="text-xl font-medium text-[#1c1c1e] leading-snug mb-3 group-hover:text-black">
+                    {log.title}
+                  </h3>
+                </div>
+                {log.tags && log.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-6">
+                    {log.tags.slice(0, 2).map((tag, tIdx) => (
+                      <span key={tIdx} className="text-xs text-gray-400">
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
         {/* Slider Container matching video aesthetic */}
-        <div className="bg-[#dfdcd9] rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 relative shadow-sm">
+        <div id="log-slider" className="bg-[#dfdcd9] rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 relative shadow-sm scroll-mt-24">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mb-16">
             
