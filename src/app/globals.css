@@ -40,3 +40,5 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #4b5563;
 }
+
+body { background-color: black; }
