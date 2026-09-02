@@ -13,31 +13,23 @@ const techStack = [
 
 export default function TechStack() {
   return (
-    <section className="bg-black py-12 md:py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-10 md:mb-14">
-          <motion.h2
-            initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-2xl md:text-3xl font-bold tracking-tight text-white"
-          >
-            Core Technologies
-          </motion.h2>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+    <section className="bg-[#e9e6e4] py-24 md:py-32 px-4 sm:px-6 lg:px-8 rounded-t-[3rem]">
+      <div className="max-w-6xl mx-auto text-center">
+        <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-[#1c1c1e] mb-16">
+          Designed for Scale
+        </h2>
+        
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
           {techStack.map((tech, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              className="flex flex-col items-center justify-center p-4 rounded-xl bg-[#0a0a0a] border border-white/10 hover:bg-white/[0.04] transition-colors"
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              className="px-8 py-6 rounded-full bg-white/50 shadow-sm border border-white/60 hover:bg-white transition-colors"
             >
-              <p className="text-sm font-semibold text-white mb-1">{tech.name}</p>
-              <p className="text-[10px] text-gray-500 uppercase tracking-widest">{tech.category}</p>
+              <p className="text-lg font-medium text-[#1c1c1e]">{tech.name}</p>
             </motion.div>
           ))}
         </div>
