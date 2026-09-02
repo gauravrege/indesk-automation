@@ -39,7 +39,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gray-950 px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-gray-950 pt-20 pb-12 sm:pt-28 sm:pb-16 lg:pb-24">
       {/* Animated gradient mesh & background overlay */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Animated multi-color gradient background */}
