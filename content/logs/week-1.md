@@ -7,7 +7,9 @@ tags: ["UI/UX", "Google Sheets", "Dashboard Design"]
 
 ## What I Built
 
-I kicked off my internship by completely redesigning the company's financial tracking system. I built the **Regional Financial Canvas**, a highly interactive, adaptive dashboard in Google Sheets that tracks Collections versus Dues across 14 regions and 4 geographical zones.
+I kicked off my internship by completely redesigning the company's financial tracking system. Management needed a way to process massive datasets—including a massive 9,000+ row **Outstanding Report**—in real time. 
+
+I built the **Regional Financial Canvas**, a highly interactive, adaptive dashboard that acts as a **two-way live sheet**. This means it doesn't just display static data; it continuously reads from our live raw data feeds and writes synced updates back to the Google Sheets backend, tracking Collections versus Dues across 14 regions and 4 geographical zones.
 
 ![Regional Financial Canvas Dashboard](/dashboard.png)
 
