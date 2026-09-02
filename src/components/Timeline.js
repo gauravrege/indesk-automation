@@ -81,7 +81,7 @@ export default function Timeline({ logs = [] }) {
             </div>
 
             {/* Right Side: Markdown Content */}
-            <div className="col-span-1 lg:col-span-7 relative min-h-[300px]">
+            <div className="col-span-1 lg:col-span-7 relative flex flex-col h-[50vh] min-h-[400px] max-h-[600px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`content-${currentIndex}`}
@@ -89,10 +89,10 @@ export default function Timeline({ logs = [] }) {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="text-[#1c1c1e] text-base md:text-lg leading-relaxed"
+                  className="text-[#1c1c1e] text-base md:text-lg leading-relaxed h-full overflow-y-auto pr-4 custom-scrollbar"
                 >
                   <div
-                    className="[&_h2]:text-xl md:[&_h2]:text-2xl [&_h2]:font-medium [&_h2]:mb-4 [&_h2]:mt-8 first:[&_h2]:mt-0 [&_ul]:list-none [&_ul]:space-y-4 [&_li]:relative [&_li]:pl-6 before:[&_li]:content-[''] before:[&_li]:absolute before:[&_li]:left-0 before:[&_li]:top-2.5 before:[&_li]:w-1.5 before:[&_li]:h-1.5 before:[&_li]:bg-black before:[&_li]:rounded-full [&_p]:mb-5 [&_blockquote]:border-l-2 [&_blockquote]:border-black/30 [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:my-8 [&_img]:rounded-2xl [&_img]:mt-8 [&_img]:w-full [&_img]:shadow-sm [&_pre]:bg-[#f5f4f2] [&_pre]:p-5 md:[&_pre]:p-6 [&_pre]:rounded-2xl [&_pre]:overflow-x-auto [&_pre]:max-w-[calc(100vw-6rem)] md:[&_pre]:max-w-full [&_pre]:border [&_pre]:border-black/5 [&_pre]:shadow-inner [&_code]:text-sm"
+                    className="[&_h2]:text-xl md:[&_h2]:text-2xl [&_h2]:font-medium [&_h2]:mb-4 [&_h2]:mt-8 first:[&_h2]:mt-0 [&_ul]:list-none [&_ul]:space-y-4 [&_li]:relative [&_li]:pl-6 before:[&_li]:content-[''] before:[&_li]:absolute before:[&_li]:left-0 before:[&_li]:top-2.5 before:[&_li]:w-1.5 before:[&_li]:h-1.5 before:[&_li]:bg-black before:[&_li]:rounded-full [&_p]:mb-5 [&_blockquote]:border-l-2 [&_blockquote]:border-black/30 [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:my-8 [&_img]:rounded-2xl [&_img]:mt-8 [&_img]:w-full [&_img]:shadow-sm [&_pre]:bg-[#e9e6e4] [&_pre]:p-5 md:[&_pre]:p-6 [&_pre]:rounded-2xl [&_pre]:overflow-x-auto [&_pre]:max-w-[calc(100vw-6rem)] md:[&_pre]:max-w-full [&_pre]:border [&_pre]:border-black/5 [&_pre]:shadow-inner [&_code]:text-sm"
                     dangerouslySetInnerHTML={{ __html: currentLog.htmlContent }}
                   />
                 </motion.div>

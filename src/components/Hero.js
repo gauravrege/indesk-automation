@@ -45,9 +45,12 @@ export default function Hero() {
           <a href="#gallery" className="px-6 py-3 rounded-full bg-black text-white text-sm font-medium hover:scale-105 transition-transform">
             View Gallery ↗
           </a>
-          <a href="#impact" className="px-6 py-3 rounded-full bg-white/50 backdrop-blur-md border border-white/40 text-black text-sm font-medium hover:bg-white/70 transition-colors">
+          <button 
+            onClick={() => document.getElementById('impact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="px-6 py-3 rounded-full bg-white/50 backdrop-blur-md border border-white/40 text-black text-sm font-medium hover:bg-white/70 transition-colors"
+          >
             See Impact
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>

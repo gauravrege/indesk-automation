@@ -5,22 +5,22 @@ import { motion } from 'framer-motion';
 const tasks = [
   {
     id: 1,
-    title: 'Two-Way Sync Engine',
-    description: 'Establish bidirectional write-back capability for the 9,090-row Outstanding Report.',
+    title: 'Outstanding Summary Dashboard',
+    description: 'Collaborating with Deepa mam, Ajay, and Phani sir on the live reporting dashboard from InDesk.',
     status: 'In Progress',
     color: 'bg-emerald-100 text-emerald-800 border-emerald-200'
   },
   {
     id: 2,
-    title: 'Automated Ticket Flagging',
-    description: 'Write Python/Node scripts to auto-flag accounts sitting in "Blocked" status.',
+    title: 'Email Automation',
+    description: 'Automating email workflows as discussed with Richard.',
     status: 'Next Up',
     color: 'bg-blue-100 text-blue-800 border-blue-200'
   },
   {
     id: 3,
-    title: 'Cloud OAuth2 Auth',
-    description: 'Secure the dashboard behind Google Workspace enterprise authentication.',
+    title: 'Development Environment',
+    description: 'Setting up essential tools such as VS Code, Python, and fixing the "See Impact" button scroll behavior.',
     status: 'Backlog',
     color: 'bg-gray-200 text-gray-800 border-gray-300'
   }
