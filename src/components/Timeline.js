@@ -104,11 +104,33 @@ export default function Timeline({ logs = [] }) {
                    initial={{ opacity: 0 }}
                    animate={{ opacity: 1 }}
                    transition={{ duration: 0.5, delay: 0.2 }}
-                   className="text-sm uppercase tracking-widest text-gray-500 font-semibold"
+                   className="text-sm uppercase tracking-widest text-gray-500 font-semibold mb-6"
                  >
                    {currentLog.date}
                  </motion.p>
                 )}
+
+                {/* Project Links */}
+                <motion.div
+                  key={`links-${currentIndex}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="flex flex-wrap gap-3 mt-2"
+                >
+                  {currentLog.github && (
+                    <a href={currentLog.github} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-full border border-black/20 text-sm font-medium hover:bg-black hover:text-white transition-colors flex items-center gap-2">
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                      GitHub Repo
+                    </a>
+                  )}
+                  {currentLog.demo && (
+                    <a href={currentLog.demo} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-full border border-black/20 text-sm font-medium hover:bg-black hover:text-white transition-colors flex items-center gap-2">
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                      Live Demo
+                    </a>
+                  )}
+                </motion.div>
               </div>
 
               {/* Navigation Buttons (Desktop) */}

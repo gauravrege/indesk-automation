@@ -3,6 +3,8 @@ week: 5
 title: "CI/CD Pipeline & Dreamy UI Architecture Refactor"
 date: "2026-09-02"
 tags: ["CI/CD", "Next.js 14", "Framer Motion", "UI/UX Refactor"]
+github: "https://github.com/gauravrege/indesk-automation"
+demo: "https://app.netlify.com/projects/interntrackin/overview"
 ---
 
 ## What I Built

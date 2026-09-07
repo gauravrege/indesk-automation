@@ -3,6 +3,7 @@ week: 4
 title: "Automated the InDesk Data Pipeline"
 date: "2026-08-15"
 tags: ["Playwright", "Node.js", "Google Sheets API", "RPA"]
+github: "https://github.com/gauravrege/indesk-rpa-pipeline"
 ---
 
 ## What I Built

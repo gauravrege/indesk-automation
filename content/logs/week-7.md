@@ -3,6 +3,7 @@ week: 7
 title: "DevOps Architecture & Headless Web Automation"
 date: "2026-09-03"
 tags: ["DevOps", "Playwright", "GitHub CLI", "Web Automation"]
+github: "https://github.com/gauravrege/indesk-automation"
 ---
 
 ## What I Built Today

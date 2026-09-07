@@ -3,6 +3,7 @@ week: 6
 title: "Intelligent PDF Data Extraction Pipeline"
 date: "2026-09-03"
 tags: ["PDF Parsing", "Node.js", "Data Engineering", "Automation"]
+github: "https://github.com/gauravrege/pdfscraper"
 ---
 
 ## What I Built

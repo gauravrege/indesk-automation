@@ -19,6 +19,8 @@ export default async function Home() {
         title: log.title,
         date: log.date,
         tags: log.tags || [],
+        github: log.github || null,
+        demo: log.demo || null,
         htmlContent,
       };
     })
