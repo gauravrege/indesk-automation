@@ -1,22 +1,23 @@
 ---
 week: 6
-title: "Intelligent PDF Data Extraction Pipeline"
-date: "2026-09-03"
-tags: ["PDF Parsing", "Node.js", "Data Engineering", "Automation"]
+title: "PDF Scraper script"
+date: "2026-09-02"
+tags: ["Node.js", "PDF Parsing", "Regex", "Data Serialization"]
 github: "https://github.com/gauravrege/pdfscraper"
 ---
 
-## What I Built
+## What Was Done
 
-I architected and developed a robust automated PDF parsing pipeline (`pdfscraper`) to systematically extract, structure, and sanitize text data from large volumes of inaccessible PDF documents into a central repository.
+I built a standalone local Node.js script to solve the problem of extracting trapped, unstructured text data from within nested PDF binary files. 
 
-## Key Engineering Achievements
+## Technical Execution
 
-- **Automated Text Extraction:** Developed a custom Node.js ingestion script utilizing `pdf-parse` to traverse the filesystem, locate nested PDF binaries, and reliably extract raw text strings without formatting loss or encoding corruption.
-- **Pattern Matching & Regular Expressions:** Engineered highly precise regex schemas to identify specific data tokens (e.g., client names, IDs, financial metrics) hidden deep within unstructured text streams.
-- **Data Serialization:** Built a dynamic serialization engine that maps the extracted raw strings into structured JSON objects, and then seamlessly writes them directly to Excel/CSV formats for downstream ingestion.
-- **Batch Processing Execution:** Containerized the pipeline into a single, executable `.bat` wrapper, allowing non-technical stakeholders to process hundreds of PDF files via a one-click execution layer.
+- **Binary PDF Parsing:** Integrated the `pdf-parse` npm library to programmatically read raw `.pdf` files from a local directory and convert their internal binary data streams into raw, unstructured JavaScript strings.
+- **Regex Pattern Matching:** Because the PDF text is completely unformatted, I engineered highly specific Regular Expressions (Regex) to scan the massive strings, locate specific anchor keywords, and slice out the exact financial data points or names we needed.
+- **Data Serialization:** The script takes the extracted Regex matches and maps them into structured JavaScript objects.
+- **CSV/Excel Exporting:** Used filesystem streams to automatically map those objects into a clean, formatted `.csv` file, effectively turning unusable PDFs into a structured database.
+- **Executable Wrapper:** Wrapped the Node.js execution command inside a `.bat` file so that non-technical users can simply double-click an icon on their desktop to run the entire extraction pipeline instantly.
 
 ## Impact
 
-> Eliminates dozens of hours of manual data entry per week. By automating the extraction of unstructured PDF data and routing it directly into structured formats, we vastly accelerated our data intake process and removed the possibility of human transcription errors.
+> This script completely eliminates the need for manual data entry. Instead of a human opening hundreds of PDFs and copy-pasting numbers into Excel one by one, the script autonomously converts folders of PDFs into structured CSVs in milliseconds.

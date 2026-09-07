@@ -1,29 +1,23 @@
 ---
 week: 4
-title: "Automated the InDesk Data Pipeline"
-date: "2026-08-15"
+title: "Playwright InDesk RPA Bot"
+date: "2026-08-31"
 tags: ["Playwright", "Node.js", "Google Sheets API", "RPA"]
 github: "https://github.com/gauravrege/indesk-rpa-pipeline"
 ---
 
-## What I Built
+## What Was Done
 
-With the backend dashboard and Apps Script perfectly handling the data, the last bottleneck was getting the raw data out of the company's legacy web portal. I designed and developed a complete **end-to-end Robotic Process Automation (RPA)** system using Node.js and Playwright.
+I engineered a fully autonomous Robotic Process Automation (RPA) script (`indesk_automation.js`) to completely eliminate the manual daily process of logging into the InDesk portal, downloading reports, and updating Google Sheets.
 
-## Key Accomplishments
+## Technical Execution
 
-- **Automated Login & Navigation:** Built a Playwright script that logs into the InDesk portal, navigates through complex nested menus, and handles dynamic iframe switching to reach the correct data views.
-- **Payment Report Extraction:** Automated the full workflow of clicking "Get", selecting all rows via the w2ui grid API, and exporting the Payment & Receipts report to Excel.
-- **Outstanding Details Report:** Extended the automation to navigate to the Outstanding Details section, fetch data, and export it — handling long server response times with smart wait strategies.
-- **Google Sheets API Integration:** Integrated the Google Cloud Platform Sheets API to programmatically clear and upload fresh data into a shared Google Sheet every day.
-- **Date Filtering Logic:** Built custom JavaScript logic to parse Excel files and filter thousands of rows by "Statement Due Date" — keeping only records from April 1, 2026 to the current date.
-
-## Challenges Solved
-
-- **White Screen Crash Recovery:** The InDesk website would occasionally freeze to a blank white screen after downloading the Payment report. I built a self-healing mechanism that detects the crash, reloads the page by clicking the Accounts tab, and retries the Outstanding Details export automatically.
-- **Dynamic Iframe Handling:** All interactive elements lived inside a cross-origin iframe. Standard Playwright selectors couldn't reach them, so I implemented `frameLocator()` to switch context into the iframe.
-- **Invisible Loading Overlays:** The website uses `.blockUI` overlays that block clicks. I used JavaScript `evaluate()` calls to bypass these overlays and click buttons directly.
+- **iFrame Traversal & DOM Scraping:** Used Playwright in Node.js to autonomously navigate to `mis.indesk.in`. Wrote custom locators to traverse deeply nested iFrames and explicitly wait for legacy `.blockUI` loading overlays to disappear before executing clicks.
+- **Automated Excel Downloads:** The bot automatically triggers the "Export To Excel" functionality for both the **Outstanding Details** and **Payment details** reports, saving the raw `.xlsx` binaries directly to the local filesystem.
+- **Local Data Parsing & Filtering:** Leveraged the `xlsx` Node library to read the raw Excel buffers. I wrote custom logic to parse the "Statement Due date" column (handling both Excel serial date numbers and raw strings) and strictly filtered out any records outside the range of **April 1, 2026 to Current Date**.
+- **Google Sheets API Syncing:** Authenticated a headless Google Cloud Service Account using local `credentials.json` keys. The script dynamically clears the old data in the target Google Sheet and executes a `values.update` REST payload to inject the fresh, filtered arrays into the respective tabs.
+- **Native OS Alerts:** Wrapped the final success state in a Child Process execution that triggers a native Windows PowerShell `MessageBox` pop-up, alerting the team that the sync is complete without needing to check the terminal.
 
 ## Impact
 
-> Eliminated ~15 hours of manual data entry per week. The entire data pipeline—from web scraping to dashboard generation—now runs hands-free in under 5 minutes.
+> This script entirely replaced a highly tedious, error-prone manual daily workflow. What previously took 15+ minutes of human navigation, Excel filtering, and copy-pasting is now executed flawlessly in the background with zero human intervention.

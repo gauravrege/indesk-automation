@@ -1,20 +1,20 @@
 ---
 week: 3
-title: "Built Cross-Sheet ERP Integrations"
+title: "Google Sheets Email Automation"
 date: "2026-07-28"
-tags: ["Google Apps Script", "API", "Cross-Sheet Sync"]
+tags: ["Google Apps Script", "API", "Workflow Automation"]
 ---
 
-## What I Built
+## What Was Done
 
-The dashboard needed external data that didn't live in our primary workspace. I built an integration script (`importMumbaiERPData`) to securely reach across Google Drive and pull remote ERP data into our local system.
+Following discussions with Richard, I engineered a Google Apps Script to automate the dispatching of standardized emails directly from the Google Sheets environment.
 
-## Key Accomplishments
+## Technical Execution
 
-- **Cross-Document Data Fetching:** Utilized `SpreadsheetApp.openById()` to bypass local sheet limitations and securely connect to an external Master ERP spreadsheet.
-- **Dynamic Data Matching:** Built a search algorithm that scans the external sheet for specific regional identifiers (e.g., "Mumbai"), extracts the corresponding ERP Dues and Balances, and safely injects them into the exact right row and column on our local summary dashboard.
-- **One-Click MIS Export:** Developed a `downloadMIS()` function utilizing `UrlFetchApp` and OAuth tokens to allow managers to download a clean Excel (.xlsx) copy of the Google Sheet directly to their local drive with one button click.
+- **Cross-Document Data Fetching:** Utilized `SpreadsheetApp.openById()` to bypass local sheet limitations and securely connect to an external Master ERP spreadsheet to retrieve email addresses and target data.
+- **Dynamic Email Construction:** Wrote a JavaScript loop to iterate through specific rows, parse out the regional identifiers, and dynamically inject the variables into a standardized HTML email template.
+- **Automated Dispatch:** Integrated the `MailApp.sendEmail()` API to programmatically batch-send the generated emails directly from the user's authenticated Google Workspace account, completely bypassing the need to open Gmail or copy-paste templates manually.
 
 ## Impact
 
-> Connected isolated data silos. Managers no longer have to copy-paste between 5 different spreadsheets; the ERP data flows into the master dashboard automatically.
+> This eliminated the repetitive administrative burden of sending dozens of identical status emails manually. What used to take hours of copy-pasting is now handled via a single script execution.

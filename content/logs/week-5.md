@@ -1,24 +1,24 @@
 ---
 week: 5
-title: "CI/CD Pipeline & Dreamy UI Architecture Refactor"
+title: "Internship Tracker Next.js Website"
 date: "2026-09-02"
-tags: ["CI/CD", "Next.js 14", "Framer Motion", "UI/UX Refactor"]
+tags: ["Next.js", "Tailwind CSS", "Framer Motion", "CI/CD"]
 github: "https://github.com/gauravrege/indesk-automation"
 demo: "https://app.netlify.com/projects/interntrackin/overview"
 ---
 
-## What I Built
+## What Was Done
 
-Today was intensely focused on productionizing the tracker, establishing continuous deployment pipelines, and undertaking a massive frontend architectural refactor to match the premium "Lucid" glassmorphic design aesthetic.
+I completely scrapped the initial dark-mode template of the Internship Tracker and rebuilt the UI from scratch using Next.js 14. The goal was to create a highly readable, interactive, and beautifully designed digital logbook to track my internship progress and showcase my engineering projects.
 
-## Key Engineering Achievements
+## Technical Execution
 
-- **Continuous Integration / Continuous Deployment (CI/CD):** Initialized the Git repository and established an automated CI/CD pipeline linked directly to Netlify. Any commits pushed to the `main` branch now automatically trigger a Next.js build and edge deployment, ensuring zero-downtime updates.
-- **Automated Daemon Cron Jobs:** Architected a background daemon (cron job) that automatically aggregates my daily engineering logs and pushes them through the CI/CD pipeline every evening.
-- **Glassmorphic UI Refactor:** Completely stripped out the legacy dark theme. Migrated the entire application to a beautiful, airy, light aesthetic featuring a hyper-realistic moon/cloud background and floating, translucent `backdrop-blur` glassmorphic bento cards.
-- **Interactive Framer Motion Slider:** Engineered a highly interactive, state-driven horizontal carousel for the weekly logs. Replaced the static vertical grid with an elegant slider featuring custom navigation buttons, a dynamic progress bar with an animated active ring, and a custom scrollbar for laptop readability.
-- **Dynamic Project Portfolio & Mission Control:** Developed a "Project Portfolio" grid that bi-directionally syncs with the Timeline Slider. Clicking a project instantly updates the active slider state and triggers a smooth-scroll viewport adjustment. Also implemented a Kanban-style "Mission Control" monitor for upcoming architecture upgrades (Outstanding Dashboard, Email Automation).
+- **Component Refactoring:** Broke down the monolithic `page.js` into modular React components (`Hero.js`, `ImpactDashboard.js`, `TechStack.js`, `TaskMonitor.js`, and `Footer.js`).
+- **Glassmorphic UI Implementation:** Replaced the dark theme with a premium, light "Lucid" aesthetic (off-white `#f5f4f2` backgrounds). I utilized Tailwind CSS `backdrop-blur` utilities and translucent borders to create floating, glassmorphic cards and "Bento Box" grids.
+- **Interactive Markdown Slider:** Engineered a custom `Timeline.js` component. It uses Node.js `fs` and `gray-matter` at build-time to parse local Markdown files (`content/logs/`), converts them to HTML, and passes them to the frontend. The UI uses Framer Motion (`AnimatePresence`) to smoothly slide horizontally between weeks.
+- **Dynamic Task Monitor:** Replaced the static Code Highlight section with a live Kanban-style Task Monitor board to clearly track what I am working on right now (InDesk Dashboard, Email Automations, etc.).
+- **Netlify CI/CD Pipeline:** Configured a continuous deployment pipeline so that every time I run `git push` from my terminal, Netlify automatically intercepts the webhook, builds the Next.js static payload, and deploys it to the live Edge network.
 
 ## Impact
 
-> Successfully moved the system into a fully automated production environment. The UX refactor brought the dashboard up to Tier-1 enterprise consumer standards, featuring fluid micro-interactions and a highly polished, breathable glassmorphic aesthetic.
+> The tracker is now a production-grade web application. It acts as a centralized, living portfolio that automatically updates itself via CI/CD whenever I log a new engineering milestone locally.

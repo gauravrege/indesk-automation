@@ -1,25 +1,24 @@
 ---
 week: 2
-title: "Engineered the Financial Data Processing Script"
+title: "InDesk Data Sync Script"
 date: "2026-07-15"
 tags: ["Google Apps Script", "JavaScript", "Data Architecture"]
 ---
 
-## What I Built
+## What Was Done
 
-To power the beautiful dashboard I designed in Week 1, I wrote a massive **800+ line Google Apps Script (`updateDirectSummary`)** to act as the backend data processing engine.
+To power the Outstanding Report dashboard designed in Week 1, I wrote an 800+ line Google Apps Script (`updateDirectSummary`) to act as the backend data processing and syncing engine.
 
-## Key Accomplishments
+## Technical Execution
 
-- **Complex Data Aggregation & Two-Way Sync:** Wrote custom logic to aggregate and filter a staggering **9,090 rows** of raw data from the live Outstanding Report and collections sheets. Engineered a two-way sync mechanism to process this massive dataset and map financial metrics accurately across 14 specific regions and 4 zones without timing out.
-- **Aggressive Date Parsing:** Built a robust `parseDateAggressive()` function to normalize messy date formats (Excel serial numbers, Google Sheets date objects, DD/MM/YYYY, YYYY-MM-DD) into standard JavaScript Date objects.
-- **Rolling 5-Day Window:** Implemented logic to automatically calculate and bucket dues and collections into a rolling 5-day window relative to the current date.
-- **Automated Formatting Engine:** Instead of relying on manual spreadsheet formatting, the script dynamically calculates background colors, font weights, and conditional formatting rules for every cell in the summary matrix using a predefined JSON palette.
-- **Safe State Reset:** Handled the complexities of merged cells and column groupings by building a safe teardown and rebuild process that doesn't break the sheet structure.
+- **Complex Data Aggregation:** Wrote custom logic to loop through and filter 9,090 rows of raw data from the live Outstanding Report. Engineered a two-way sync mechanism to map financial metrics across 14 specific regions and 4 zones.
+- **Aggressive Date Parsing:** Built a robust `parseDateAggressive()` JavaScript function to normalize messy date formats (Excel serial numbers, Google Sheets Date objects, strings) into standard JavaScript Date objects.
+- **Rolling 5-Day Window:** Implemented algorithmic logic to calculate dues and collections into a rolling 5-day window relative to the current date.
+- **Automated Formatting Engine:** The script dynamically calculates background colors, font weights, and conditional formatting rules for every cell in the summary matrix using a predefined JSON palette.
 
-## Code Highlight
+## Code Snippet
 
-I had to write an aggressive fallback date parser to handle all the weird ways Excel and Google Sheets handle dates behind the scenes:
+I wrote an aggressive fallback date parser to handle inconsistent formats across the Excel dumps:
 
 ```javascript
 const parseDateAggressive = function(val) {
@@ -30,8 +29,5 @@ const parseDateAggressive = function(val) {
   if (typeof val === "number") {
     return new Date(Math.round((val - 25569) * 86400 * 1000));
   }
-  
-  // Handles various string formats via Regex
-  // ...
 };
 ```

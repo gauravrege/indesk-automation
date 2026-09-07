@@ -1,22 +1,21 @@
 ---
 week: 7
-title: "DevOps Architecture & Headless Web Automation"
+title: "GitHub CLI & LinkedIn Automation"
 date: "2026-09-03"
-tags: ["DevOps", "Playwright", "GitHub CLI", "Web Automation"]
+tags: ["Playwright", "GitHub CLI", "PowerShell", "Browser Automation"]
 github: "https://github.com/gauravrege/indesk-automation"
 ---
 
-## What I Built Today
+## What Was Done
 
-Today's focus shifted towards Developer Operations (DevOps), infrastructure provisioning, and advanced headless web automation. I architected solutions to bypass restrictive local administrative environments and deployed intelligent browser agents to autonomously interact with third-party web applications.
+Today's focus was on automating my own developer operations. I wrote scripts to bypass restrictive local computer permissions to install the GitHub CLI, automated the creation of GitHub repositories, and used a headless browser to automatically update my professional LinkedIn profile.
 
-## Key Engineering Achievements
+## Technical Execution
 
-- **Administrative Restriction Bypass & CLI Provisioning:** Successfully circumvented local Windows UAC (User Account Control) restrictions by engineering a custom PowerShell script to fetch, extract, and configure a portable, headless instance of the GitHub CLI (`gh`). 
-- **Automated Repository Initialization:** Executed secure OAuth web-flow authentication directly from the terminal, enabling zero-touch provisioning of new GitHub repositories. Seamlessly bundled the legacy `pdfscraper` codebase into a clean Git commit history and deployed it to the cloud.
-- **Headless Browser Agent Deployment:** Invoked a specialized Chromium-based browser agent using Playwright over the `chrome_devtools` protocol (port 9222). The agent autonomously navigated complex, deeply nested React DOM trees to execute UI interactions on external platforms without human input.
-- **Automated Web Presence Syncing:** Translated our internal architectural milestones, CI/CD implementations, and RPA pipelines into highly structured, consumer-facing engineering copy. Injected this data directly into external professional networks via the headless browser agent, instantly aligning public-facing portfolios with our live engineering sprints.
+- **Administrative Restriction Bypass:** The local Windows machine had UAC (User Account Control) restrictions that blocked standard `.msi` installations of `gh` (GitHub CLI). I bypassed this by using a custom PowerShell script to fetch, extract, and configure a portable, headless `.zip` instance of the CLI directly on the desktop.
+- **Automated Repository Initialization:** Executed secure OAuth web-flow authentication via the terminal to link the portable CLI to my GitHub. I then programmatically initialized new Git repositories (`pdfscraper` and `indesk-rpa-pipeline`), scrubbed `credentials.json` files to bypass GitHub's secret-scanning Push Protection, and deployed the code to the cloud.
+- **Headless LinkedIn Automation:** Launched a specialized Chromium-based browser agent using Playwright connecting over the `chrome_devtools` protocol (port 9222) via a dedicated Chrome Bot Profile. The script autonomously navigated LinkedIn's complex React DOM to execute UI clicks and inject my highly technical engineering copy directly into my profile's Headline and About sections.
 
 ## Impact
 
-> By completely automating our repository provisioning and public engineering updates, we eliminated the friction of manual deployment rituals. The integration of a remote-debugging Chrome instance allows our infrastructure to interact with the broader web autonomously, bridging the gap between isolated scripts and full-scale web automation.
+> By utilizing headless browsers and portable CLI binaries, I completely automated the tedious processes of repository provisioning and personal branding updates. This ensures my public facing portfolio and codebase are always perfectly in sync with my local engineering sprints.
