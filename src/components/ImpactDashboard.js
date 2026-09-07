@@ -29,12 +29,12 @@ function AnimatedCounter({ target, duration = 2, suffix = '' }) {
 }
 
 const impactMetrics = [
-  { value: 7, suffix: '', label: 'Projects Shipped', description: 'End-to-end engineering solutions deployed to production' },
-  { value: 9090, suffix: '+', label: 'Data Rows Processed', description: 'Outstanding report records parsed and synced daily' },
-  { value: 15, suffix: '+', label: 'Hours Saved Weekly', description: 'Manual workflows eliminated through RPA automation' },
-  { value: 14, suffix: '', label: 'Regions Covered', description: 'Geographic zones with live financial dashboards' },
-  { value: 3, suffix: '', label: 'Live Deployments', description: 'Production systems running autonomously 24/7' },
-  { value: 100, suffix: '%', label: 'Zero-Touch Automation', description: 'Full pipeline from data extraction to formatted reports' },
+  { value: 7, suffix: '', label: 'Projects Built', description: 'Automation scripts, dashboards, and web applications developed' },
+  { value: 9090, suffix: '+', label: 'Data Rows Processed', description: 'Outstanding report records parsed and synced via scripts' },
+  { value: 15, suffix: '+', label: 'Hours Automated Weekly', description: 'Manual workflows replaced with RPA bots and scripts' },
+  { value: 14, suffix: '', label: 'Regions Covered', description: 'Geographic zones tracked in the financial dashboard' },
+  { value: 3, suffix: '', label: 'Active Pipelines', description: 'Automated data flows running across Google Sheets and APIs' },
+  { value: 100, suffix: '%', label: 'End-to-End Automation', description: 'From raw data extraction to formatted summary reports' },
 ];
 
 export default function ImpactDashboard() {
