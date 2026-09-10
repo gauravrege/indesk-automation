@@ -1,31 +1,30 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
+import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { useRef, useEffect } from 'react';
 
-function AnimatedCounter({ target, duration = 2, suffix = '' }) {
-  const [count, setCount] = useState(0);
+/**
+ * Counts up to `target` on first scroll into view. Spring-driven, so it
+ * decelerates into the final number instead of stopping dead.
+ */
+function AnimatedCounter({ target, suffix = '' }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '0px 0px -50px 0px' });
+  const isInView = useInView(ref, { once: true, margin: '0px 0px -60px 0px' });
+
+  const count = useMotionValue(0);
+  const smooth = useSpring(count, { stiffness: 60, damping: 18, mass: 0.9 });
+  const text = useTransform(smooth, (v) => Math.round(v).toLocaleString('en-US'));
 
   useEffect(() => {
-    if (!isInView) return;
-    let start = 0;
-    const end = target;
-    const increment = end / (duration * 60);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, 1000 / 60);
-    return () => clearInterval(timer);
-  }, [isInView, target, duration]);
+    if (isInView) count.set(target);
+  }, [isInView, target, count]);
 
-  return <span ref={ref}>{count}{suffix}</span>;
+  return (
+    <span ref={ref} className="tabular-nums">
+      <motion.span>{text}</motion.span>
+      {suffix}
+    </span>
+  );
 }
 
 const impactMetrics = [
@@ -39,32 +38,44 @@ const impactMetrics = [
 
 export default function ImpactDashboard() {
   return (
-    <section id="impact" className="relative z-20 -mt-32 pb-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+    <section id="impact" className="relative z-20 -mt-32 px-4 pb-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
           {impactMetrics.map((metric, index) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '0px 0px -50px 0px' }}
-              transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className="group p-5 rounded-[1.5rem] bg-white/70 backdrop-blur-2xl border border-white/50 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:bg-white hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 cursor-default"
+              key={metric.label}
+              initial={{ opacity: 0, y: 34, filter: 'blur(6px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+              transition={{
+                duration: 0.75,
+                delay: index * 0.07,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              whileHover={{ y: -6 }}
+              className="shine-host group cursor-default rounded-[1.5rem] border border-white/60 bg-white/70 p-5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.06)] backdrop-blur-2xl transition-[background-color,box-shadow] duration-300 hover:bg-white hover:shadow-[0_24px_60px_-18px_rgba(0,0,0,0.16)]"
             >
               <div className="mb-4">
-                <h3 className="text-3xl md:text-4xl font-light tracking-tight text-[#1c1c1e]">
+                <h3 className="text-3xl font-light tracking-tight text-[#1c1c1e] md:text-4xl">
                   <AnimatedCounter target={metric.value} suffix={metric.suffix} />
                 </h3>
               </div>
-              <div className="border-t border-gray-200/50 pt-3">
-                <p className="text-sm font-semibold text-gray-800 leading-tight">
-                  {metric.label}
-                </p>
-                <p className="text-[11px] text-gray-400 mt-1 leading-snug opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  {metric.description}
-                </p>
-              </div>
+
+              {/* Rule grows out from the left as the card appears */}
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.25 + index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                className="mb-3 h-px origin-left bg-gray-200/70"
+              />
+
+              <p className="text-sm font-semibold leading-tight text-gray-800">
+                {metric.label}
+              </p>
+              <p className="mt-1 max-h-0 overflow-hidden text-[11px] leading-snug text-gray-400 opacity-0 transition-all duration-500 group-hover:max-h-24 group-hover:opacity-100">
+                {metric.description}
+              </p>
             </motion.div>
           ))}
         </div>

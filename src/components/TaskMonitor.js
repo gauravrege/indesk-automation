@@ -5,67 +5,108 @@ import { motion } from 'framer-motion';
 const tasks = [
   {
     id: 1,
-    title: 'Outstanding Summary Dashboard',
-    description: 'Collaborating with Deepa mam, Ajay, and Phani sir on the live reporting dashboard from InDesk.',
+    title: 'Statement Consolidation Rollout',
+    description:
+      'Customer Statement Transformer delivered and in use. Next: widen it to the remaining branch statement formats.',
     status: 'In Progress',
-    color: 'bg-emerald-100 text-emerald-800 border-emerald-200'
+    tone: 'live',
+    color: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   },
   {
     id: 2,
-    title: 'Email Automation',
-    description: 'Automating email workflows as discussed with Richard.',
+    title: 'Invoice Match at Scale',
+    description:
+      'Invoice PDF matcher shipped. Next: run it across the shared network drives instead of one machine at a time.',
     status: 'Next Up',
-    color: 'bg-blue-100 text-blue-800 border-blue-200'
+    tone: 'queued',
+    color: 'bg-blue-50 text-blue-700 border-blue-200',
   },
   {
     id: 3,
-    title: 'Development Environment',
-    description: 'Setting up essential tools such as VS Code, Python, and fixing the "See Impact" button scroll behavior.',
+    title: 'RPA Pipeline Hardening',
+    description:
+      'Portal credentials moved out of source into environment variables. Next: scheduled unattended runs with failure alerts.',
     status: 'Backlog',
-    color: 'bg-gray-200 text-gray-800 border-gray-300'
-  }
+    tone: 'idle',
+    color: 'bg-gray-100 text-gray-700 border-gray-300',
+  },
 ];
+
+const dotColor = {
+  live: 'bg-emerald-500',
+  queued: 'bg-blue-500',
+  idle: 'bg-gray-400',
+};
 
 export default function TaskMonitor() {
   return (
-    <section className="bg-[#f5f4f2] py-24 md:py-32 px-4 sm:px-6 lg:px-8 border-t border-black/5">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-16 md:mb-20 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: -10 }}
+    <section className="border-t border-black/5 bg-[#f5f4f2] px-4 py-24 sm:px-6 md:py-32 lg:px-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-16 text-center md:mb-20">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-medium tracking-tight text-[#1c1c1e] mb-4"
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-400"
+          >
+            What&rsquo;s Running
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-4 text-4xl font-medium tracking-tight text-[#1c1c1e] md:text-5xl"
           >
             Mission Control
           </motion.h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-auto max-w-2xl text-lg text-gray-500"
+          >
             Live monitor of upcoming architecture upgrades and automation pipelines.
-          </p>
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
           {tasks.map((task, index) => (
             <motion.div
               key={task.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group flex flex-col p-8 rounded-3xl bg-white border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              initial={{ opacity: 0, y: 26, filter: 'blur(5px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+              transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -6 }}
+              className="shine-host group flex flex-col rounded-3xl border border-gray-200 bg-white p-8 shadow-sm transition-shadow duration-300 hover:shadow-xl"
             >
-              <div className="flex justify-between items-start mb-6">
-                <span className={`px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full border ${task.color}`}>
+              <div className="mb-6 flex items-start justify-between">
+                <span
+                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider ${task.color}`}
+                >
+                  <span className="relative flex h-1.5 w-1.5">
+                    {task.tone === 'live' && (
+                      <span className={`soft-ping absolute inline-flex h-full w-full rounded-full ${dotColor[task.tone]}`} />
+                    )}
+                    <span className={`relative inline-flex h-1.5 w-1.5 rounded-full ${dotColor[task.tone]}`} />
+                  </span>
                   {task.status}
                 </span>
-                <span className="text-gray-300 group-hover:text-black transition-colors">↗</span>
+                <span className="text-gray-300 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-black">
+                  &#8599;
+                </span>
               </div>
-              <h3 className="text-2xl font-medium text-[#1c1c1e] tracking-tight mb-3">
+
+              <h3 className="mb-3 text-2xl font-medium tracking-tight text-[#1c1c1e]">
                 {task.title}
               </h3>
-              <p className="text-gray-500 leading-relaxed">
-                {task.description}
-              </p>
+              <p className="leading-relaxed text-gray-500">{task.description}</p>
+
+              {/* Rule sweeps in on hover */}
+              <div className="mt-6 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-black/20 to-transparent transition-transform duration-500 group-hover:scale-x-100" />
             </motion.div>
           ))}
         </div>
