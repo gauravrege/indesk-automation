@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 
 const techStack = [
   { name: 'JavaScript', category: 'Language' },
-  { name: 'Next.js 14', category: 'Framework' },
+  { name: 'Next.js 16', category: 'Framework' },
+  { name: 'Python', category: 'Language' },
   { name: 'Playwright', category: 'Automation' },
   { name: 'Node.js', category: 'Backend' },
   { name: 'Google Sheets API', category: 'Database' },
