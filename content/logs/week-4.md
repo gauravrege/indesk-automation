@@ -3,7 +3,6 @@ week: 4
 title: "Playwright InDesk RPA Bot"
 date: "2026-08-31"
 tags: ["Playwright", "Node.js", "Google Sheets API", "RPA"]
-github: "https://github.com/gauravrege/indesk-rpa-pipeline"
 ---
 
 ## What Was Done

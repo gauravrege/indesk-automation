@@ -29,12 +29,12 @@ function AnimatedCounter({ target, duration = 2, suffix = '' }) {
 }
 
 const impactMetrics = [
-  { value: 7, suffix: '', label: 'Projects Built', description: 'Automation scripts, dashboards, and web applications developed' },
-  { value: 9090, suffix: '+', label: 'Data Rows Processed', description: 'Outstanding report records parsed and synced via scripts' },
+  { value: 10, suffix: '', label: 'Projects Shipped', description: 'Automation tools, dashboards and web apps built and delivered during the internship' },
+  { value: 10000, suffix: '+', label: 'Rows Consolidated Per Run', description: 'Statement transactions merged and tagged with their customer in a single pass' },
+  { value: 40, suffix: '+', label: 'Sheets Merged At Once', description: 'Separate customer sheets pulled into one reconciled table, across multiple workbooks' },
+  { value: 30, suffix: 's', label: 'Replaces A Full Working Day', description: 'Statement consolidation that took a full day by hand now finishes in about thirty seconds' },
   { value: 15, suffix: '+', label: 'Hours Automated Weekly', description: 'Manual workflows replaced with RPA bots and scripts' },
-  { value: 14, suffix: '', label: 'Regions Covered', description: 'Geographic zones tracked in the financial dashboard' },
-  { value: 3, suffix: '', label: 'Active Pipelines', description: 'Automated data flows running across Google Sheets and APIs' },
-  { value: 100, suffix: '%', label: 'End-to-End Automation', description: 'From raw data extraction to formatted summary reports' },
+  { value: 100, suffix: '%', label: 'Balance-Checked Accuracy', description: 'Every merged sheet proved against its own printed total before the file is released' },
 ];
 
 export default function ImpactDashboard() {
