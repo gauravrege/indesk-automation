@@ -143,16 +143,9 @@ body {
 }
 
 /* ===============================================================
-   MARQUEE — slow enough to read as drift, not motion.
+   MARQUEE — drift by default; the scroll wheel drives its speed
+   and direction from JS (see TechStack).
    =============================================================== */
-@keyframes marquee {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-50%, 0, 0); }
-}
-.marquee-track { animation: marquee 78s linear infinite; will-change: transform; }
-.marquee-wrap:hover .marquee-track,
-.marquee-wrap:focus-within .marquee-track { animation-play-state: paused; }
-
 .marquee-mask {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
@@ -208,11 +201,70 @@ body {
 .link-wipe:hover::after { transform: scaleX(1); transform-origin: left; }
 
 /* ===============================================================
+   CURSOR — the native arrow is hidden only once the custom one has
+   actually mounted, so a JS failure can never leave the page
+   without a pointer.
+   =============================================================== */
+.cursor-hidden,
+.cursor-hidden * { cursor: none !important; }
+
+/* ===============================================================
+   PULSE — a slow breath on the one thing that is live. Opacity and
+   transform only, so it composites and never repaints.
+   =============================================================== */
+@keyframes pulse-breath {
+  0%, 100% { opacity: 0.35; transform: scale(0.82); }
+  50%      { opacity: 1;    transform: scale(1);    }
+}
+.pulse-dot {
+  animation: pulse-breath 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ===============================================================
+   SCROLL CUE — a hairline that fills downward and resets.
+   =============================================================== */
+.scroll-cue { position: relative; overflow: hidden; }
+.scroll-cue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--sand);
+  transform: translateY(-100%);
+  animation: cue-fall 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes cue-fall {
+  0%        { transform: translateY(-100%); }
+  55%, 100% { transform: translateY(100%);  }
+}
+
+/* ===============================================================
+   ROW SWEEP — a pane of light crosses the index row on hover,
+   left to right, and leaves on the same side it entered.
+   =============================================================== */
+.row-sweep::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(196, 179, 147, 0.10),
+    rgba(196, 179, 147, 0.03) 55%,
+    transparent
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.row-sweep:hover::before { transform: scaleX(1); }
+
+/* ===============================================================
    REDUCED MOTION
    =============================================================== */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .marquee-track { animation: none !important; }
+  .scroll-cue::after,
+  .pulse-dot { animation: none !important; }
   *, *::before, *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;

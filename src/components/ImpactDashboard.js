@@ -60,6 +60,14 @@ export default function ImpactDashboard() {
               <p className="font-display text-[2.4rem] leading-none text-[var(--bone)] transition-colors duration-700 group-hover:text-[var(--sand)] md:text-[2.9rem]">
                 <AnimatedCounter target={metric.value} suffix={metric.suffix} />
               </p>
+              <motion.span
+                aria-hidden="true"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true, margin: '0px 0px -70px 0px' }}
+                transition={{ duration: 1.1, delay: 0.35 + index * 0.09, ease: EASE }}
+                className="mx-auto mt-5 block h-px w-8 origin-center bg-[var(--sand-dim)]"
+              />
               <p className="eyebrow mt-4">{metric.label}</p>
             </motion.div>
           ))}

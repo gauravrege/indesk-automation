@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Reveal from './Reveal';
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -42,9 +43,11 @@ export default function TaskMonitor() {
           transition={{ duration: 1.2, ease: EASE }}
           className="mb-14 flex items-baseline justify-between gap-6 border-b border-[var(--hair)] pb-6"
         >
-          <h2 className="font-display text-[2.4rem] leading-none text-[var(--bone)] md:text-[3.25rem]">
-            In Progress
-          </h2>
+          <Reveal
+            text="In Progress"
+            as="h2"
+            className="font-display text-[2.4rem] leading-none text-[var(--bone)] md:text-[3.25rem]"
+          />
           <p className="eyebrow shrink-0">Current</p>
         </motion.div>
 
@@ -59,10 +62,16 @@ export default function TaskMonitor() {
               className="edge-draw group relative bg-[var(--void)] p-8 transition-colors duration-700 hover:bg-[var(--surface)] md:p-10"
             >
               <p
-                className={`eyebrow mb-8 ${
+                className={`eyebrow mb-8 flex items-center gap-2.5 ${
                   task.current ? 'text-[var(--sand)]' : ''
                 }`}
               >
+                {task.current && (
+                  <span
+                    className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--sand)]"
+                    aria-hidden="true"
+                  />
+                )}
                 {task.state}
               </p>
 

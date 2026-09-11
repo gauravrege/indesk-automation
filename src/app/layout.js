@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
+import Cursor from "@/components/Cursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,6 +50,7 @@ export default function RootLayout({ children }) {
     >
       <body className="antialiased">
         <ScrollProgress />
+        <Cursor />
         <div className="grain" aria-hidden="true" />
         {children}
       </body>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Reveal from './Reveal';
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -39,9 +40,11 @@ export default function Timeline({ logs = [] }) {
             transition={{ duration: 1.2, ease: EASE }}
             className="mb-14 flex items-baseline justify-between gap-6 border-b border-[var(--hair)] pb-6"
           >
-            <h2 className="font-display text-[2.4rem] leading-none text-[var(--bone)] md:text-[3.25rem]">
-              Index
-            </h2>
+            <Reveal
+              text="Index"
+              as="h2"
+              className="font-display text-[2.4rem] leading-none text-[var(--bone)] md:text-[3.25rem]"
+            />
             <p className="eyebrow shrink-0">
               {String(logs.length).padStart(2, '0')} Projects
             </p>
@@ -62,19 +65,19 @@ export default function Timeline({ logs = [] }) {
                     type="button"
                     onClick={() => openLog(idx)}
                     aria-current={isActive ? 'true' : undefined}
-                    className="group grid w-full grid-cols-[2.6rem_1fr] items-baseline gap-x-4 border-b border-[var(--hair)] py-6 text-left transition-colors duration-700 hover:bg-white/[0.018] md:grid-cols-[3.5rem_1fr_auto] md:gap-x-8 md:py-7"
+                    className="row-sweep group relative grid w-full grid-cols-[2.6rem_1fr] items-baseline gap-x-4 border-b border-[var(--hair)] py-6 text-left md:grid-cols-[3.5rem_1fr_auto] md:gap-x-8 md:py-7"
                   >
                     <span
-                      className={`font-mono text-[11px] tracking-[0.18em] transition-colors duration-700 ${
+                      className={`relative font-mono text-[11px] tracking-[0.18em] transition-all duration-700 group-hover:translate-x-1 ${
                         isActive ? 'text-[var(--sand)]' : 'text-[var(--bone-4)] group-hover:text-[var(--bone-3)]'
                       }`}
                     >
                       {String(log.week).padStart(2, '0')}
                     </span>
 
-                    <span className="min-w-0">
+                    <span className="relative min-w-0">
                       <span
-                        className={`font-display block text-[1.5rem] leading-[1.15] transition-colors duration-700 md:text-[2rem] ${
+                        className={`font-display block text-[1.5rem] leading-[1.15] transition-all duration-700 group-hover:translate-x-1.5 md:text-[2rem] ${
                           isActive ? 'text-[var(--sand)]' : 'text-[var(--bone)]'
                         }`}
                       >
@@ -87,7 +90,7 @@ export default function Timeline({ logs = [] }) {
                       )}
                     </span>
 
-                    <span className="hidden items-baseline gap-7 md:flex">
+                    <span className="relative hidden items-baseline gap-7 md:flex">
                       {log.tags && log.tags.length > 0 && (
                         <span className="text-[0.72rem] tracking-[0.08em] text-[var(--bone-4)]">
                           {log.tags.slice(0, 2).join(' · ')}

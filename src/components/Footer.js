@@ -1,6 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import Reveal from './Reveal';
+import Magnetic from './Magnetic';
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -10,29 +13,66 @@ const links = [
   // a dead link reads worse than no link at all.
 ];
 
+/**
+ * Local time in Mumbai, ticking. Rendered empty on the server and filled in
+ * after mount, because a clock that renders on the server is a guaranteed
+ * hydration mismatch.
+ */
+function LocalTime() {
+  const [now, setNow] = useState('');
+
+  useEffect(() => {
+    const tick = () =>
+      setNow(
+        new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Asia/Kolkata',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+        }).format(new Date())
+      );
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <span className="flex items-center gap-2.5">
+      <span
+        className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--sand)]"
+        aria-hidden="true"
+      />
+      <span className="font-mono text-[10px] tabular-nums tracking-[0.24em] text-[var(--bone-4)]">
+        {now || '--:--:--'} IST
+      </span>
+    </span>
+  );
+}
+
 export default function Footer() {
   return (
     <footer className="atmosphere relative overflow-hidden pb-14 pt-32 md:pt-44">
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.3, ease: EASE }}
-          className="eyebrow mb-10 text-center"
+          className="mb-10 flex items-center justify-center gap-6"
         >
-          Mumbai
-        </motion.p>
+          <p className="eyebrow">Mumbai</p>
+          <span className="h-3 w-px bg-[var(--hair-2)]" aria-hidden="true" />
+          <LocalTime />
+        </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.5, delay: 0.1, ease: EASE }}
-          className="font-display whitespace-nowrap text-center text-[15vw] leading-[0.86] text-[var(--bone)] md:text-[10rem]"
-        >
-          Gaurav Rege
-        </motion.p>
+        <Reveal
+          text="Gaurav Rege"
+          as="p"
+          stagger={0.045}
+          duration={1.4}
+          className="font-display block whitespace-nowrap text-center text-[15vw] leading-[0.86] text-[var(--bone)] md:text-[10rem]"
+        />
 
         <div className="rule-fade mt-24" aria-hidden="true" />
 
@@ -49,25 +89,28 @@ export default function Footer() {
 
           <div className="order-1 flex items-center gap-9 md:order-2">
             {links.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link-wipe text-[0.74rem] uppercase tracking-[0.22em] text-[var(--bone-3)] transition-colors duration-500 hover:text-[var(--sand)]"
-              >
-                {link.label}
-              </a>
+              <Magnetic key={link.label}>
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-wipe text-[0.74rem] uppercase tracking-[0.22em] text-[var(--bone-3)] transition-colors duration-500 hover:text-[var(--sand)]"
+                >
+                  {link.label}
+                </a>
+              </Magnetic>
             ))}
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="w-4 text-[var(--bone-4)] transition-all duration-500 hover:-translate-y-0.5 hover:text-[var(--sand)]"
-              aria-label="Back to top"
-            >
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1">
-                <path d="M8 15V2M3 7l5-5 5 5" />
-              </svg>
-            </button>
+            <Magnetic strength={0.5}>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="w-4 text-[var(--bone-4)] transition-colors duration-500 hover:text-[var(--sand)]"
+                aria-label="Back to top"
+              >
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1">
+                  <path d="M8 15V2M3 7l5-5 5 5" />
+                </svg>
+              </button>
+            </Magnetic>
           </div>
         </motion.div>
       </div>
