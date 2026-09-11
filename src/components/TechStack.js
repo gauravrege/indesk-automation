@@ -2,86 +2,55 @@
 
 import { motion } from 'framer-motion';
 
-const EASE = [0.16, 1, 0.3, 1];
+const EASE = [0.22, 1, 0.36, 1];
 
 const techStack = [
-  { name: 'JavaScript', category: 'Language' },
-  { name: 'Python', category: 'Language' },
-  { name: 'Node.js', category: 'Runtime' },
-  { name: 'Next.js 16', category: 'Framework' },
-  { name: 'Playwright', category: 'Automation' },
-  { name: 'Google Apps Script', category: 'Automation' },
-  { name: 'Google Sheets API', category: 'Data' },
-  { name: 'Tailwind CSS', category: 'Styling' },
-  { name: 'Framer Motion', category: 'Motion' },
-  { name: 'GitHub CLI', category: 'Tooling' },
+  'JavaScript',
+  'Python',
+  'Node.js',
+  'Next.js',
+  'Playwright',
+  'Google Apps Script',
+  'Sheets API',
+  'Tailwind',
+  'Framer Motion',
+  'GitHub CLI',
 ];
 
-/** One ribbon. Items are duplicated so the -50% loop is seamless. */
-function Row({ items, reverse = false }) {
-  return (
-    <div className="marquee-wrap marquee-mask relative flex overflow-hidden">
-      <div
-        className="marquee-track flex shrink-0 gap-3 pr-3 md:gap-4 md:pr-4"
-        style={reverse ? { animationDirection: 'reverse' } : undefined}
-      >
-        {[...items, ...items].map((tech, i) => (
-          <div
-            key={`${tech.name}-${i}`}
-            className="group flex shrink-0 items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--card)] px-6 py-4 transition-colors duration-300 hover:border-[var(--teal)]"
-          >
-            <span
-              className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--teal)]/35 transition-colors duration-300 group-hover:bg-[var(--teal)]"
-              aria-hidden="true"
-            />
-            <span className="whitespace-nowrap text-base font-medium text-[var(--ink)]">
-              {tech.name}
-            </span>
-            <span className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--ink-mute)]">
-              {tech.category}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function TechStack() {
-  const half = Math.ceil(techStack.length / 2);
-
   return (
-    <section className="relative overflow-hidden border-t border-[var(--line)] bg-[var(--paper-warm)] py-24 md:py-32">
-      <div className="mx-auto mb-14 max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden py-24 md:py-32">
+      <div className="mx-auto mb-16 max-w-6xl px-5 sm:px-8">
         <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: EASE }}
-          className="mb-5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--teal)]"
+          transition={{ duration: 1.2, ease: EASE }}
+          className="eyebrow text-center"
         >
-          The Toolkit
+          Instruments
         </motion.p>
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.75, ease: EASE }}
-          className="font-display text-[2.5rem] leading-[1.05] text-[var(--ink)] md:text-6xl"
-        >
-          Designed for <span className="italic text-[var(--teal)]">Scale</span>
-        </motion.h2>
       </div>
 
+      {/* Plain words, drifting. No pills, no borders, no icons — the
+          restraint is the design. */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.9 }}
-        className="flex flex-col gap-3 md:gap-4"
+        transition={{ duration: 1.6, ease: EASE }}
+        className="marquee-wrap marquee-mask relative flex overflow-hidden"
       >
-        <Row items={techStack.slice(0, half)} />
-        <Row items={techStack.slice(half)} reverse />
+        <div className="marquee-track flex shrink-0 items-center">
+          {[...techStack, ...techStack].map((name, i) => (
+            <span key={`${name}-${i}`} className="flex shrink-0 items-center">
+              <span className="font-display whitespace-nowrap px-8 text-[1.75rem] text-[var(--bone-3)] transition-colors duration-700 hover:text-[var(--bone)] md:px-12 md:text-[2.5rem]">
+                {name}
+              </span>
+              <span className="h-1 w-1 shrink-0 rotate-45 bg-[var(--sand-dim)]" aria-hidden="true" />
+            </span>
+          ))}
+        </div>
       </motion.div>
     </section>
   );

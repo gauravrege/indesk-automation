@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const EASE = [0.16, 1, 0.3, 1];
+const EASE = [0.22, 1, 0.36, 1];
 
 export default function Timeline({ logs = [] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,173 +21,151 @@ export default function Timeline({ logs = [] }) {
   const currentLog = logs[currentIndex];
   const progress = logs.length > 1 ? currentIndex / (logs.length - 1) : 1;
 
+  const openLog = (idx) => {
+    setCurrentIndex(idx);
+    document.getElementById('log')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   return (
-    <section
-      id="gallery"
-      className="atmosphere-soft relative overflow-hidden bg-[var(--paper)] px-4 py-20 sm:px-6 md:py-28 lg:px-8"
-    >
+    <section id="index" className="atmosphere-faint relative px-5 py-24 sm:px-8 md:py-32">
       <div className="relative mx-auto max-w-6xl">
 
-        {/* ---------------- Project grid ---------------- */}
-        <div className="mb-20 md:mb-24">
-          <div className="mb-12 text-center">
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: EASE }}
-              className="mb-5 inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--teal)]"
-            >
-              <span className="h-px w-7 bg-[var(--teal)]/45" aria-hidden="true" />
-              {logs.length} Projects &middot; Weeks 1&ndash;{logs[logs.length - 1]?.week}
-              <span className="h-px w-7 bg-[var(--teal)]/45" aria-hidden="true" />
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.75, ease: EASE }}
-              className="font-display mb-4 text-[2.75rem] leading-[1.05] text-[var(--ink)] md:text-6xl"
-            >
-              Project <span className="italic text-[var(--teal)]">Portfolio</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.08, ease: EASE }}
-              className="mx-auto max-w-xl text-[0.95rem] text-[var(--ink-soft)] md:text-base"
-            >
-              Select a project to view its detailed weekly engineering log.
-            </motion.p>
-          </div>
+        {/* ---------------- Index ---------------- */}
+        <div className="mb-28 md:mb-36">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, ease: EASE }}
+            className="mb-14 flex items-baseline justify-between gap-6 border-b border-[var(--hair)] pb-6"
+          >
+            <h2 className="font-display text-[2.4rem] leading-none text-[var(--bone)] md:text-[3.25rem]">
+              Index
+            </h2>
+            <p className="eyebrow shrink-0">
+              {String(logs.length).padStart(2, '0')} Projects
+            </p>
+          </motion.div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ul>
             {logs.map((log, idx) => {
               const isActive = idx === currentIndex;
               return (
-                <motion.button
-                  type="button"
-                  key={`project-${idx}`}
-                  initial={{ opacity: 0, y: 24 }}
+                <motion.li
+                  key={`row-${idx}`}
+                  initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '0px 0px -60px 0px' }}
-                  transition={{ duration: 0.6, delay: (idx % 3) * 0.08, ease: EASE }}
-                  whileHover={{ y: -5 }}
-                  onClick={() => {
-                    setCurrentIndex(idx);
-                    document
-                      .getElementById('log-slider')
-                      ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  }}
-                  aria-current={isActive ? 'true' : undefined}
-                  className={`lift group flex cursor-pointer flex-col justify-between rounded-2xl border p-7 text-left transition-colors duration-300 ${
-                    isActive
-                      ? 'border-[var(--teal)]/45 bg-[var(--teal)]/[0.045]'
-                      : 'border-[var(--line)] bg-[var(--card)] hover:border-[var(--line-strong)]'
-                  }`}
+                  viewport={{ once: true, margin: '0px 0px -50px 0px' }}
+                  transition={{ duration: 0.9, delay: Math.min(idx, 6) * 0.055, ease: EASE }}
                 >
-                  <div className="w-full">
-                    <div className="mb-6 flex items-baseline justify-between gap-3">
+                  <button
+                    type="button"
+                    onClick={() => openLog(idx)}
+                    aria-current={isActive ? 'true' : undefined}
+                    className="group grid w-full grid-cols-[2.6rem_1fr] items-baseline gap-x-4 border-b border-[var(--hair)] py-6 text-left transition-colors duration-700 hover:bg-white/[0.018] md:grid-cols-[3.5rem_1fr_auto] md:gap-x-8 md:py-7"
+                  >
+                    <span
+                      className={`font-mono text-[11px] tracking-[0.18em] transition-colors duration-700 ${
+                        isActive ? 'text-[var(--sand)]' : 'text-[var(--bone-4)] group-hover:text-[var(--bone-3)]'
+                      }`}
+                    >
+                      {String(log.week).padStart(2, '0')}
+                    </span>
+
+                    <span className="min-w-0">
                       <span
-                        className={`font-mono text-[11px] tracking-[0.12em] transition-colors duration-300 ${
-                          isActive ? 'text-[var(--teal)]' : 'text-[var(--ink-mute)]'
+                        className={`font-display block text-[1.5rem] leading-[1.15] transition-colors duration-700 md:text-[2rem] ${
+                          isActive ? 'text-[var(--sand)]' : 'text-[var(--bone)]'
                         }`}
                       >
-                        WK {String(log.week).padStart(2, '0')}
+                        {log.title}
                       </span>
+                      {log.tags && log.tags.length > 0 && (
+                        <span className="mt-2 block text-[0.72rem] tracking-[0.08em] text-[var(--bone-4)] md:hidden">
+                          {log.tags.slice(0, 2).join(' · ')}
+                        </span>
+                      )}
+                    </span>
+
+                    <span className="hidden items-baseline gap-7 md:flex">
+                      {log.tags && log.tags.length > 0 && (
+                        <span className="text-[0.72rem] tracking-[0.08em] text-[var(--bone-4)]">
+                          {log.tags.slice(0, 2).join(' · ')}
+                        </span>
+                      )}
                       <span
-                        className={`transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${
-                          isActive ? 'text-[var(--teal)]' : 'text-[var(--ink-mute)]'
+                        className={`block w-4 transition-all duration-700 group-hover:translate-x-1 ${
+                          isActive ? 'text-[var(--sand)]' : 'text-[var(--bone-4)]'
                         }`}
                         aria-hidden="true"
                       >
-                        &#8599;
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1">
+                          <path d="M1 8h13M9 3l5 5-5 5" />
+                        </svg>
                       </span>
-                    </div>
-                    <h3 className="font-display text-[1.6rem] leading-[1.12] text-[var(--ink)]">
-                      {log.title}
-                    </h3>
-                  </div>
-
-                  {log.tags && log.tags.length > 0 && (
-                    <div className="mt-7 flex flex-wrap gap-1.5">
-                      {log.tags.slice(0, 2).map((tag, tIdx) => (
-                        <span
-                          key={tIdx}
-                          className="rounded-md border border-[var(--line)] px-2 py-0.5 text-[11px] font-medium text-[var(--ink-soft)]"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </motion.button>
+                    </span>
+                  </button>
+                </motion.li>
               );
             })}
-          </div>
+          </ul>
         </div>
 
-        {/* ---------------- Log slider (dark) ---------------- */}
+        {/* ---------------- The log ---------------- */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 22 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '0px 0px -80px 0px' }}
-          transition={{ duration: 0.8, ease: EASE }}
-          id="log-slider"
-          className="on-dark relative scroll-mt-24 overflow-hidden rounded-[1.5rem] bg-[var(--obsidian)] p-7 shadow-[0_40px_90px_-40px_rgba(21,21,26,0.55)] sm:p-10 md:rounded-[2rem] md:p-14"
+          viewport={{ once: true, margin: '0px 0px -90px 0px' }}
+          transition={{ duration: 1.2, ease: EASE }}
+          id="log"
+          className="relative scroll-mt-20 border border-[var(--hair)] bg-[var(--surface)] px-6 py-10 sm:px-10 md:px-14 md:py-14"
         >
-          <div className="atmosphere-dark pointer-events-none absolute inset-0" aria-hidden="true" />
-          <div className="grid-substrate-dark pointer-events-none absolute inset-0" aria-hidden="true" />
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
 
-          <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
-
-            {/* ---------- Left column ---------- */}
+            {/* ---------- Left ---------- */}
             <div className="col-span-1 flex flex-col lg:col-span-5">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`meta-${currentIndex}`}
-                  initial={{ opacity: 0, y: 12 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.4, ease: EASE }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.7, ease: EASE }}
                 >
-                  <p className="mb-4 flex items-center gap-3 font-mono text-[11px] tracking-[0.22em] text-[var(--gold)]">
-                    WEEK {String(currentLog.week).padStart(2, '0')}
-                    <span className="h-px w-8 bg-[var(--gold)]/40" aria-hidden="true" />
+                  <p className="eyebrow mb-6 flex items-center gap-4">
+                    Week {String(currentLog.week).padStart(2, '0')}
+                    <span className="h-px w-10 bg-[var(--hair-2)]" aria-hidden="true" />
                   </p>
-                  <h2 className="font-display mb-4 text-[2.1rem] leading-[1.06] text-[var(--cream)] md:text-[2.6rem] lg:text-[3rem]">
+
+                  <h2 className="font-display mb-5 text-[2rem] leading-[1.08] text-[var(--bone)] md:text-[2.5rem] lg:text-[2.9rem]">
                     {currentLog.title}
                   </h2>
+
                   {currentLog.date && (
-                    <p className="mb-6 font-mono text-xs tracking-wide text-[var(--cream-soft)]">
+                    <p className="mb-8 font-mono text-[11px] tracking-[0.14em] text-[var(--bone-4)]">
                       {currentLog.date}
                     </p>
                   )}
 
                   {currentLog.tags && currentLog.tags.length > 0 && (
-                    <div className="mb-7 flex flex-wrap gap-1.5">
+                    <ul className="mb-9 space-y-1.5">
                       {currentLog.tags.map((tag, tIdx) => (
-                        <span
-                          key={tIdx}
-                          className="rounded-md border border-[var(--line-dark)] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-[var(--cream-body)]"
-                        >
+                        <li key={tIdx} className="text-[0.78rem] tracking-[0.05em] text-[var(--bone-3)]">
                           {tag}
-                        </span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   )}
 
-                  <div className="flex flex-wrap gap-2.5">
+                  <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
                     {currentLog.github && (
                       <a
                         href={currentLog.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full bg-[var(--gold)] px-4 py-2 text-sm font-medium text-[var(--obsidian)] transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-[#e2c288]"
+                        className="link-wipe text-[0.74rem] uppercase tracking-[0.22em] text-[var(--bone)] transition-colors duration-500 hover:text-[var(--sand)]"
                       >
-                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                        GitHub Repo
+                        Repository
                       </a>
                     )}
                     {currentLog.demo && (
@@ -195,30 +173,29 @@ export default function Timeline({ logs = [] }) {
                         href={currentLog.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full border border-[var(--line-dark-s)] px-4 py-2 text-sm font-medium text-[var(--cream)] transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-white/[0.08]"
+                        className="link-wipe text-[0.74rem] uppercase tracking-[0.22em] text-[var(--bone)] transition-colors duration-500 hover:text-[var(--sand)]"
                       >
-                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                        Live Demo
+                        Live Site
                       </a>
                     )}
                   </div>
                 </motion.div>
               </AnimatePresence>
 
-              {/* Oversized numeral sits in normal flow inside its own fixed box,
-                  so it cannot collide with the log text beside it. */}
+              {/* Oversized numeral, in normal flow inside its own fixed box so
+                  it cannot collide with the prose beside it. */}
               <div
-                className="pointer-events-none relative mt-10 hidden h-24 select-none overflow-hidden lg:block"
+                className="pointer-events-none relative mt-14 hidden h-24 select-none overflow-hidden lg:block"
                 aria-hidden="true"
               >
                 <AnimatePresence mode="wait">
                   <motion.span
                     key={`ghost-${currentIndex}`}
-                    initial={{ opacity: 0, y: 22 }}
+                    initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -22 }}
-                    transition={{ duration: 0.5, ease: EASE }}
-                    className="font-display absolute -left-1 top-0 text-[6.5rem] leading-[0.8] text-white/[0.07]"
+                    exit={{ opacity: 0, y: -18 }}
+                    transition={{ duration: 0.8, ease: EASE }}
+                    className="font-display absolute -left-1 top-0 text-[6.5rem] leading-[0.8] text-[var(--bone)]/[0.055]"
                   >
                     {String(currentLog.week).padStart(2, '0')}
                   </motion.span>
@@ -226,81 +203,83 @@ export default function Timeline({ logs = [] }) {
               </div>
 
               {/* Desktop navigation */}
-              <div className="mt-auto hidden items-center gap-3 pt-10 lg:flex">
-                <button
-                  onClick={prevSlide}
-                  aria-label="Previous week"
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line-dark-s)] text-[var(--cream)] transition-[background-color,transform,border-color,color] duration-300 hover:-translate-y-0.5 hover:border-[var(--gold)] hover:bg-[var(--gold)] hover:text-[var(--obsidian)]"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M15 18l-6-6 6-6" /></svg>
-                </button>
-                <button
-                  onClick={nextSlide}
-                  aria-label="Next week"
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line-dark-s)] text-[var(--cream)] transition-[background-color,transform,border-color,color] duration-300 hover:-translate-y-0.5 hover:border-[var(--gold)] hover:bg-[var(--gold)] hover:text-[var(--obsidian)]"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M9 18l6-6-6-6" /></svg>
-                </button>
-                <span className="ml-2 font-mono text-xs tabular-nums text-[var(--cream-soft)]">
-                  {String(currentIndex + 1).padStart(2, '0')}
-                  <span className="mx-1 text-[var(--cream-soft)]/60">/</span>
-                  {String(logs.length).padStart(2, '0')}
+              <div className="mt-auto hidden items-center gap-8 pt-12 lg:flex">
+                <div className="flex items-center gap-5">
+                  <button
+                    onClick={prevSlide}
+                    aria-label="Previous week"
+                    className="w-5 text-[var(--bone-3)] transition-all duration-500 hover:-translate-x-0.5 hover:text-[var(--sand)]"
+                  >
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1"><path d="M15 8H2M7 3L2 8l5 5" /></svg>
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    aria-label="Next week"
+                    className="w-5 text-[var(--bone-3)] transition-all duration-500 hover:translate-x-0.5 hover:text-[var(--sand)]"
+                  >
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1"><path d="M1 8h13M9 3l5 5-5 5" /></svg>
+                  </button>
+                </div>
+                <span className="font-mono text-[11px] tabular-nums tracking-[0.16em] text-[var(--bone-4)]">
+                  {String(currentIndex + 1).padStart(2, '0')} &mdash; {String(logs.length).padStart(2, '0')}
                 </span>
               </div>
             </div>
 
-            {/* ---------- Right column: the log ---------- */}
-            <div className="relative col-span-1 flex h-[52vh] max-h-[560px] min-h-[380px] flex-col lg:col-span-7">
+            {/* ---------- Right: the prose ---------- */}
+            <div className="relative col-span-1 flex h-[54vh] max-h-[580px] min-h-[400px] flex-col lg:col-span-7">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`content-${currentIndex}`}
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={{ opacity: 0, x: 14 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.4, ease: 'easeInOut' }}
-                  className="custom-scrollbar h-full overflow-y-auto pr-4 text-[0.95rem] leading-[1.75] text-[var(--cream-body)] md:text-base"
+                  exit={{ opacity: 0, x: -14 }}
+                  transition={{ duration: 0.6, ease: EASE }}
+                  className="custom-scrollbar h-full overflow-y-auto pr-6 text-[0.92rem] leading-[1.95] text-[var(--bone-2)]"
                 >
                   <div
-                    className="[&_h2]:font-display [&_h2]:text-[1.5rem] md:[&_h2]:text-[1.75rem] [&_h2]:leading-tight [&_h2]:text-[var(--cream)] [&_h2]:mb-4 [&_h2]:mt-9 first:[&_h2]:mt-0 [&_ul]:list-none [&_ul]:space-y-4 [&_li]:relative [&_li]:pl-5 [&_li]:before:content-[''] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-[0.65em] [&_li]:before:w-1.5 [&_li]:before:h-1.5 [&_li]:before:bg-[var(--gold)] [&_li]:before:rounded-full [&_p]:mb-4 [&_strong]:font-semibold [&_strong]:text-[var(--cream)] [&_blockquote]:border-l-2 [&_blockquote]:border-[var(--gold)] [&_blockquote]:pl-5 [&_blockquote]:italic [&_blockquote]:text-[var(--cream)] [&_blockquote]:my-7 [&_img]:rounded-xl [&_img]:mt-6 [&_img]:w-full [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:bg-white/[0.07] [&_code]:text-[var(--teal-bright)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_pre]:bg-[var(--obsidian-card)] [&_pre]:p-5 [&_pre]:rounded-xl [&_pre]:overflow-x-auto [&_pre]:border [&_pre]:border-[var(--line-dark)] [&_pre]:my-5"
+                    className="[&_h2]:font-mono [&_h2]:text-[10px] [&_h2]:leading-none [&_h2]:tracking-[0.3em] [&_h2]:uppercase [&_h2]:text-[var(--sand-dim)] [&_h2]:font-normal [&_h2]:pb-4 [&_h2]:border-b [&_h2]:border-[var(--hair)] [&_h2]:mb-7 [&_h2]:mt-14 first:[&_h2]:mt-0 [&_ul]:list-none [&_ul]:space-y-5 [&_li]:relative [&_li]:pl-6 [&_li]:before:content-[''] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-[0.85em] [&_li]:before:w-2.5 [&_li]:before:h-px [&_li]:before:bg-[var(--sand-dim)] [&_p]:mb-5 [&_strong]:font-normal [&_strong]:text-[var(--bone)] [&_blockquote]:border-l [&_blockquote]:border-[var(--sand-dim)] [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:text-[var(--bone)] [&_blockquote]:my-9 [&_blockquote]:font-display [&_blockquote]:text-[1.15rem] [&_blockquote]:leading-[1.7] [&_img]:mt-8 [&_img]:w-full [&_code]:font-mono [&_code]:text-[0.82em] [&_code]:text-[var(--sand)] [&_code]:bg-white/[0.05] [&_code]:px-1.5 [&_code]:py-0.5 [&_pre]:bg-[var(--surface-3)] [&_pre]:p-6 [&_pre]:overflow-x-auto [&_pre]:border [&_pre]:border-[var(--hair)] [&_pre]:my-6"
                     dangerouslySetInnerHTML={{ __html: currentLog.htmlContent }}
                   />
                 </motion.div>
               </AnimatePresence>
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-[var(--obsidian)] to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[var(--surface)] to-transparent" />
 
               {/* Mobile navigation */}
-              <div className="mt-8 flex items-center gap-3 lg:hidden">
-                <button
-                  onClick={prevSlide}
-                  aria-label="Previous week"
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line-dark-s)] text-[var(--cream)] transition-colors hover:bg-[var(--gold)] hover:text-[var(--obsidian)] active:scale-95"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M15 18l-6-6 6-6" /></svg>
-                </button>
-                <button
-                  onClick={nextSlide}
-                  aria-label="Next week"
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line-dark-s)] text-[var(--cream)] transition-colors hover:bg-[var(--gold)] hover:text-[var(--obsidian)] active:scale-95"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M9 18l6-6-6-6" /></svg>
-                </button>
-                <span className="ml-1 font-mono text-xs tabular-nums text-[var(--cream-soft)]">
-                  {String(currentIndex + 1).padStart(2, '0')} / {String(logs.length).padStart(2, '0')}
+              <div className="mt-8 flex items-center gap-8 lg:hidden">
+                <div className="flex items-center gap-5">
+                  <button
+                    onClick={prevSlide}
+                    aria-label="Previous week"
+                    className="w-5 text-[var(--bone-3)] transition-colors hover:text-[var(--sand)]"
+                  >
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1"><path d="M15 8H2M7 3L2 8l5 5" /></svg>
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    aria-label="Next week"
+                    className="w-5 text-[var(--bone-3)] transition-colors hover:text-[var(--sand)]"
+                  >
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1"><path d="M1 8h13M9 3l5 5-5 5" /></svg>
+                  </button>
+                </div>
+                <span className="font-mono text-[11px] tabular-nums tracking-[0.16em] text-[var(--bone-4)]">
+                  {String(currentIndex + 1).padStart(2, '0')} &mdash; {String(logs.length).padStart(2, '0')}
                 </span>
               </div>
             </div>
           </div>
 
           {/* ---------- Progress rail ---------- */}
-          <div className="relative mt-10 flex h-10 w-full items-center md:mt-14">
-            <div className="absolute left-3 right-3 h-px bg-[var(--line-dark-s)]" />
+          <div className="relative mt-14 flex h-6 w-full items-center">
+            <div className="absolute inset-x-0 h-px bg-[var(--hair)]" />
             <motion.div
-              className="absolute left-3 right-3 h-[2px] origin-left bg-[var(--gold)]"
+              className="absolute inset-x-0 h-px origin-left bg-[var(--sand)]"
               animate={{ scaleX: progress }}
-              transition={{ duration: 0.5, ease: EASE }}
+              transition={{ duration: 0.9, ease: EASE }}
             />
-            <div className="absolute inset-x-0 flex justify-between px-3">
+            <div className="absolute inset-x-0 flex justify-between">
               {logs.map((log, idx) => (
                 <button
                   type="button"
@@ -308,25 +287,16 @@ export default function Timeline({ logs = [] }) {
                   onClick={() => setCurrentIndex(idx)}
                   aria-label={`Week ${log.week}: ${log.title}`}
                   aria-current={idx === currentIndex ? 'true' : undefined}
-                  title={`Week ${log.week} - ${log.title}`}
-                  className="group relative flex h-7 w-7 cursor-pointer items-center justify-center"
+                  title={`${String(log.week).padStart(2, '0')} — ${log.title}`}
+                  className="group relative flex h-6 w-6 cursor-pointer items-center justify-center"
                 >
                   <span
-                    className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
+                    className={`h-px transition-all duration-700 ${
                       idx === currentIndex
-                        ? 'bg-[var(--gold)]'
-                        : idx < currentIndex
-                        ? 'bg-[var(--gold)]/50 group-hover:bg-[var(--gold)]/85'
-                        : 'bg-white/25 group-hover:bg-white/55'
+                        ? 'w-4 bg-[var(--sand)]'
+                        : 'w-2 bg-[var(--hair-3)] group-hover:w-3 group-hover:bg-[var(--bone-3)]'
                     }`}
                   />
-                  {idx === currentIndex && (
-                    <motion.span
-                      layoutId="activeRing"
-                      className="absolute inset-0 rounded-full border-2 border-[var(--gold)]"
-                      transition={{ type: 'spring', stiffness: 320, damping: 30 }}
-                    />
-                  )}
                 </button>
               ))}
             </div>

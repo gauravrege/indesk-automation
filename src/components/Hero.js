@@ -3,15 +3,17 @@
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useRef } from 'react';
 
-const EASE = [0.16, 1, 0.3, 1];
+/* Long, flat easing. Nothing overshoots; nothing hurries. */
+const EASE = [0.22, 1, 0.36, 1];
+
 const LINE_ONE = ['My', 'work', 'is'];
 const LINE_TWO = ['rebuilding', 'systems'];
 
 const word = {
-  hidden: { y: '108%' },
+  hidden: { y: '112%' },
   show: (i) => ({
     y: '0%',
-    transition: { duration: 0.9, delay: 0.12 + i * 0.07, ease: EASE },
+    transition: { duration: 1.5, delay: 0.25 + i * 0.11, ease: EASE },
   }),
 };
 
@@ -23,59 +25,50 @@ export default function Hero() {
     target: ref,
     offset: ['start start', 'end start'],
   });
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '16%']);
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-12%']);
-  const fade = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '14%']);
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-9%']);
+  const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
-    /* The bottom padding reserves the strip that the impact cards overhang
-       into. Content is centred within what is left, so the buttons can never
-       collide with the cards — which they did on short laptop screens when
-       this was a plain centred box. */
+    /* The bottom padding reserves the strip the index overlaps into, so
+       nothing here can ever collide with what follows. */
     <section
       ref={ref}
-      className="relative flex h-[94vh] min-h-[600px] w-full flex-col items-center justify-center overflow-hidden pb-[clamp(7rem,16vh,11rem)]"
+      className="relative flex h-[96vh] min-h-[620px] w-full flex-col items-center justify-center overflow-hidden pb-[clamp(6rem,14vh,10rem)]"
     >
+      {/* The moon, held well back. It is texture, not a picture. */}
       <motion.div
         style={{ y: reduce ? 0 : bgY }}
-        className="absolute inset-0 z-0 scale-110 bg-cover bg-center"
+        className="absolute inset-0 z-0 scale-110"
       >
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center opacity-[0.30]"
           style={{ backgroundImage: 'url(/bg-moon.jpg)' }}
         />
+        <div className="absolute inset-0 bg-[var(--void)]/45" />
       </motion.div>
 
       <div className="atmosphere absolute inset-0 z-0" aria-hidden="true" />
-      <div className="grid-substrate absolute inset-0 z-0 opacity-60" aria-hidden="true" />
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#eceef1]/55 via-transparent to-[var(--paper)]" />
-      <div className="absolute inset-x-0 bottom-0 z-0 h-56 bg-gradient-to-t from-[var(--paper)] to-transparent" />
+      <div className="grid-substrate absolute inset-0 z-0" aria-hidden="true" />
+      <div className="absolute inset-x-0 bottom-0 z-0 h-64 bg-gradient-to-t from-[var(--void)] via-[var(--void)]/80 to-transparent" />
 
       <motion.div
         style={{ y: reduce ? 0 : textY, opacity: reduce ? 1 : fade }}
         className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center px-6 text-center"
       >
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: EASE }}
-          className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-[var(--line-strong)] bg-white/70 px-4 py-1.5"
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.4, delay: 0.1, ease: EASE }}
+          className="eyebrow mb-12"
         >
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="soft-ping absolute inline-flex h-full w-full rounded-full bg-[var(--verified)]" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--verified)]" />
-          </span>
-          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--ink-body)]">
-            Automation Engineer Intern
-          </span>
-        </motion.div>
+          Automation Engineer &nbsp;/&nbsp; Internship 2026
+        </motion.p>
 
-        {/* Sans statement, serif-italic payoff. The typeface switch is what
-            keeps this from reading as a one-font template. */}
-        <h1 className="mb-8 leading-[0.98] text-[var(--ink)]">
-          <span className="block text-[2.6rem] font-medium tracking-[-0.035em] sm:text-6xl md:text-[4.5rem]">
+        <h1 className="font-display mb-12 leading-[0.94] text-[var(--bone)]">
+          <span className="block text-[2.9rem] sm:text-[4.25rem] md:text-[5.5rem]">
             {LINE_ONE.map((w, i) => (
-              <span key={w} className="inline-block overflow-hidden pb-[0.08em] align-bottom">
+              <span key={w} className="inline-block overflow-hidden pb-[0.09em] align-bottom">
                 <motion.span className="inline-block" custom={i} variants={word} initial="hidden" animate="show">
                   {w}
                 </motion.span>
@@ -83,11 +76,11 @@ export default function Hero() {
               </span>
             ))}
           </span>
-          <span className="font-display mt-1 block text-[3.4rem] italic sm:text-[4.75rem] md:text-[6.25rem]">
+          <span className="block text-[3.1rem] italic sm:text-[4.5rem] md:text-[6rem]">
             {LINE_TWO.map((w, i) => (
-              <span key={w} className="inline-block overflow-hidden pb-[0.1em] align-bottom">
+              <span key={w} className="inline-block overflow-hidden pb-[0.11em] align-bottom">
                 <motion.span
-                  className={`inline-block ${i === 1 ? 'text-[var(--teal)]' : ''}`}
+                  className="inline-block"
                   custom={LINE_ONE.length + i}
                   variants={word}
                   initial="hidden"
@@ -102,37 +95,36 @@ export default function Hero() {
         </h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
-          className="mb-9 max-w-lg text-[0.95rem] leading-relaxed text-[var(--ink-body)] md:text-base"
+          transition={{ duration: 1.3, delay: 0.95, ease: EASE }}
+          className="mb-14 max-w-md text-[0.9rem] leading-[1.9] text-[var(--bone-3)]"
         >
-          Turning days of manual spreadsheet work into scripts that finish in seconds &mdash;
-          and prove they got every row.
+          Days of manual spreadsheet work, reduced to scripts that finish in seconds
+          &mdash; and prove they got every row.
         </motion.p>
 
+        {/* Text links, not buttons. A button asks; a link simply is. */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.62, ease: EASE }}
-          className="flex flex-wrap items-center justify-center gap-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.3, delay: 1.15, ease: EASE }}
+          className="flex items-center gap-10"
         >
           <a
-            href="#gallery"
-            className="group inline-flex items-center gap-2 rounded-full bg-[var(--teal)] px-7 py-3.5 text-sm font-medium text-white transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-[var(--teal-lift)] active:translate-y-0"
+            href="#index"
+            className="link-wipe text-[0.78rem] uppercase tracking-[0.22em] text-[var(--bone)] transition-colors duration-500 hover:text-[var(--sand)]"
           >
-            View Projects
-            <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-              &#8599;
-            </span>
+            The Work
           </a>
+          <span className="h-3 w-px bg-[var(--hair-2)]" aria-hidden="true" />
           <button
             onClick={() =>
               document.getElementById('impact')?.scrollIntoView({ behavior: 'smooth' })
             }
-            className="rounded-full border border-[var(--line-strong)] bg-white/70 px-7 py-3.5 text-sm font-medium text-[var(--ink)] transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-white"
+            className="link-wipe text-[0.78rem] uppercase tracking-[0.22em] text-[var(--bone-3)] transition-colors duration-500 hover:text-[var(--bone)]"
           >
-            See Impact
+            In Numbers
           </button>
         </motion.div>
       </motion.div>
