@@ -2,33 +2,50 @@
 
 /* ===============================================================
    PALETTE
-   Warm paper base, with an ink-and-spot-colour accent system
-   layered on top. Colour carries meaning here: teal is the brand
-   ink, ochre marks the active/current thing, green means verified.
+   Two ranges. A warm paper range for the light sections, and an
+   obsidian range for the dark ones. Alternating them is what gives
+   the page rhythm — seven cream sections in a row read as flat.
+   Colour carries meaning: teal is the brand ink, ochre/gold marks
+   the current thing, green means balance-checked.
    =============================================================== */
 :root {
-  /* Surfaces */
-  --paper:       #f6f5f2;
-  --paper-warm:  #efece6;
-  --paper-deep:  #e7e3dc;
+  /* Light surfaces */
+  --paper:       #f7f6f3;
+  --paper-warm:  #f0ede7;
+  --paper-deep:  #e8e4dd;
   --card:        #fffefc;
 
-  /* Ink — all four pass WCAG AA on --paper */
-  --ink:         #16161a;   /* 16.9:1  headings            */
-  --ink-body:    #33333b;   /* 11.2:1  body copy           */
-  --ink-soft:    #56565f;   /*  7.1:1  secondary           */
-  --ink-mute:    #616169;   /*  5.2:1  smallest legal text */
+  /* Ink on paper — all pass WCAG AA */
+  --ink:         #15151a;
+  --ink-body:    #33333b;
+  --ink-soft:    #56565f;
+  --ink-mute:    #616169;
+
+  /* Dark surfaces */
+  --obsidian:      #131417;
+  --obsidian-soft: #1b1d22;
+  --obsidian-card: #202329;
+
+  /* Ink on obsidian */
+  --cream:       #f4f2ed;
+  --cream-body:  #c5c2ba;
+  --cream-soft:  #94918a;
 
   /* Accents */
-  --teal:        #0d4f52;   /* brand ink, 8.9:1 on paper  */
+  --teal:        #0d4f52;
   --teal-lift:   #12696d;
-  --ochre:       #7a4010;   /* active / current, 7.5:1 paper / 6.4:1 panel */
-  --ochre-lift:  #c26a1e;
-  --verified:    #2c6146;   /* balance-checked, 7.2:1     */
+  --teal-bright: #6fc0c4;   /* teal legible on obsidian */
+  --ochre:       #7a4010;
+  --gold:        #d4af6a;   /* warm metallic, dark sections only */
+  --gold-soft:   #a98846;
+  --verified:    #2c6146;
+  --verified-br: #6cc79a;
 
   /* Lines */
-  --line:        rgba(22, 22, 26, 0.10);
-  --line-strong: rgba(22, 22, 26, 0.22);
+  --line:        rgba(21, 21, 26, 0.10);
+  --line-strong: rgba(21, 21, 26, 0.22);
+  --line-dark:   rgba(244, 242, 237, 0.12);
+  --line-dark-s: rgba(244, 242, 237, 0.22);
 }
 
 @theme inline {
@@ -36,11 +53,10 @@
   --color-ink: var(--ink);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background-color: var(--paper);
@@ -51,14 +67,23 @@ body {
   overflow-x: hidden;
 }
 
-::selection { background: var(--teal); color: #fff; }
+/* Display serif. Optical sizing at large scale needs tighter tracking
+   and a raised baseline relative to the sans it sits beside. */
+.font-display {
+  font-family: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
 
-/* Visible keyboard focus everywhere. */
+::selection { background: var(--teal); color: #fff; }
+.on-dark ::selection { background: var(--gold); color: var(--obsidian); }
+
 :where(a, button, [tabindex]):focus-visible {
   outline: 2px solid var(--teal);
   outline-offset: 3px;
   border-radius: 4px;
 }
+.on-dark :where(a, button, [tabindex]):focus-visible { outline-color: var(--gold); }
 
 /* ===============================================================
    SCROLLBARS
@@ -66,25 +91,23 @@ body {
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--paper); }
 ::-webkit-scrollbar-thumb {
-  background: rgba(22, 22, 26, 0.18);
+  background: rgba(21, 21, 26, 0.18);
   border-radius: 99px;
   border: 3px solid var(--paper);
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(22, 22, 26, 0.32); }
+::-webkit-scrollbar-thumb:hover { background: rgba(21, 21, 26, 0.32); }
 
 .custom-scrollbar::-webkit-scrollbar { width: 4px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(22, 22, 26, 0.16);
+  background: rgba(244, 242, 237, 0.20);
   border-radius: 4px;
   border: none;
 }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(244, 242, 237, 0.38); }
 
 /* ===============================================================
-   TEXTURE  —  static, painted once.
-   The previous build animated a 4x-viewport grain overlay, which
-   forced a full-screen repaint every frame. This is the same look
-   for zero per-frame cost: no animation, no compositing layer.
+   TEXTURE — static, painted once. No animation, no extra layer.
    =============================================================== */
 .grain {
   position: fixed;
@@ -96,32 +119,57 @@ body {
 }
 
 /* ===============================================================
-   ATMOSPHERE  —  layered radial gradients instead of blurred divs.
-   A gradient is rasterised once. A blur(110px) on an 800px div is
-   re-rasterised on every frame it moves. Same soft colour wash,
-   none of the cost.
+   ATMOSPHERE — layered radial gradients, not blurred divs.
+   A gradient rasterises once; a blur(110px) on an 800px div
+   re-rasterises every frame it moves.
    =============================================================== */
 .atmosphere {
   background-image:
-    radial-gradient(58% 44% at 12% 8%,  rgba(13, 79, 82, 0.16), transparent 70%),
-    radial-gradient(52% 46% at 88% 26%, rgba(156, 85, 24, 0.14), transparent 70%),
+    radial-gradient(58% 44% at 12% 8%,  rgba(13, 79, 82, 0.17), transparent 70%),
+    radial-gradient(52% 46% at 88% 26%, rgba(122, 64, 16, 0.14), transparent 70%),
     radial-gradient(60% 40% at 50% 96%, rgba(44, 97, 70, 0.10), transparent 72%);
 }
 
 .atmosphere-soft {
   background-image:
     radial-gradient(70% 50% at 78% 0%, rgba(13, 79, 82, 0.07), transparent 68%),
-    radial-gradient(60% 45% at 8% 92%, rgba(156, 85, 24, 0.06), transparent 70%);
+    radial-gradient(60% 45% at 8% 92%, rgba(122, 64, 16, 0.06), transparent 70%);
 }
 
-/* Hairline grid substrate — one repeating gradient, no elements. */
+/* Warm light pooling inside the dark sections. */
+.atmosphere-dark {
+  background-image:
+    radial-gradient(56% 46% at 88% 4%,  rgba(212, 175, 106, 0.13), transparent 66%),
+    radial-gradient(60% 50% at 6% 88%,  rgba(111, 192, 196, 0.10), transparent 68%),
+    radial-gradient(80% 60% at 50% 50%, rgba(255, 255, 255, 0.025), transparent 70%);
+}
+
 .grid-substrate {
   background-image:
-    linear-gradient(to right, rgba(22, 22, 26, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(22, 22, 26, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, rgba(21, 21, 26, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(21, 21, 26, 0.045) 1px, transparent 1px);
   background-size: 76px 76px;
   -webkit-mask-image: radial-gradient(72% 62% at 50% 42%, #000 30%, transparent 78%);
   mask-image: radial-gradient(72% 62% at 50% 42%, #000 30%, transparent 78%);
+}
+
+.grid-substrate-dark {
+  background-image:
+    linear-gradient(to right, rgba(244, 242, 237, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(244, 242, 237, 0.05) 1px, transparent 1px);
+  background-size: 88px 88px;
+  -webkit-mask-image: radial-gradient(76% 66% at 50% 40%, #000 22%, transparent 76%);
+  mask-image: radial-gradient(76% 66% at 50% 40%, #000 22%, transparent 76%);
+}
+
+/* Hairline gradient rule — a thin line that fades at both ends. */
+.rule-fade {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--line-strong), transparent);
+}
+.rule-fade-dark {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--line-dark-s), transparent);
 }
 
 /* ===============================================================
@@ -131,10 +179,7 @@ body {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(-50%, 0, 0); }
 }
-.marquee-track {
-  animation: marquee 46s linear infinite;
-  will-change: transform;
-}
+.marquee-track { animation: marquee 52s linear infinite; will-change: transform; }
 .marquee-wrap:hover .marquee-track,
 .marquee-wrap:focus-within .marquee-track { animation-play-state: paused; }
 
@@ -154,9 +199,8 @@ body {
 .soft-ping { animation: soft-ping 2.6s cubic-bezier(0, 0, 0.2, 1) infinite; }
 
 /* ===============================================================
-   CARD LIFT  —  the shadow is pre-declared on a pseudo-element and
-   only its OPACITY changes on hover. Animating box-shadow directly
-   repaints; animating opacity composites.
+   ELEVATION — the shadow is pre-declared and only its opacity
+   animates. Animating box-shadow repaints; opacity composites.
    =============================================================== */
 .lift { position: relative; }
 .lift::before {
@@ -164,27 +208,31 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 22px 48px -20px rgba(22, 22, 26, 0.28);
+  box-shadow: 0 24px 50px -22px rgba(21, 21, 26, 0.30);
   opacity: 0;
   transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 .lift:hover::before { opacity: 1; }
 
-/* Accent rule that wipes in from the left on hover. */
-.rule-wipe { position: relative; }
-.rule-wipe::after {
+.lift-dark::before {
+  box-shadow: 0 24px 54px -22px rgba(0, 0, 0, 0.66);
+}
+
+/* A hairline that warms to gold along the top edge of a dark card. */
+.edge-gold { position: relative; }
+.edge-gold::after {
   content: "";
   position: absolute;
-  left: 0; bottom: 0;
-  height: 2px;
-  width: 100%;
-  background: linear-gradient(to right, var(--teal), transparent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  inset: 0 0 auto 0;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
 }
-.rule-wipe:hover::after { transform: scaleX(1); }
+.edge-gold:hover::after { opacity: 0.85; }
 
 /* ===============================================================
    REDUCED MOTION

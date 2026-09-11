@@ -7,12 +7,11 @@ const EASE = [0.16, 1, 0.3, 1];
 const LINE_ONE = ['My', 'work', 'is'];
 const LINE_TWO = ['rebuilding', 'systems'];
 
-/* Words rise out of a mask, slightly overlapping. Transform + opacity only. */
 const word = {
   hidden: { y: '108%' },
   show: (i) => ({
     y: '0%',
-    transition: { duration: 0.85, delay: 0.12 + i * 0.07, ease: EASE },
+    transition: { duration: 0.9, delay: 0.12 + i * 0.07, ease: EASE },
   }),
 };
 
@@ -29,11 +28,14 @@ export default function Hero() {
   const fade = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
 
   return (
+    /* The bottom padding reserves the strip that the impact cards overhang
+       into. Content is centred within what is left, so the buttons can never
+       collide with the cards — which they did on short laptop screens when
+       this was a plain centred box. */
     <section
       ref={ref}
-      className="relative flex h-[92vh] min-h-[620px] w-full flex-col items-center justify-center overflow-hidden"
+      className="relative flex h-[94vh] min-h-[600px] w-full flex-col items-center justify-center overflow-hidden pb-[clamp(7rem,16vh,11rem)]"
     >
-      {/* Photographic backdrop — transform-only parallax */}
       <motion.div
         style={{ y: reduce ? 0 : bgY }}
         className="absolute inset-0 z-0 scale-110 bg-cover bg-center"
@@ -44,24 +46,20 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* Colour wash — static gradients, painted once, zero per-frame cost */}
       <div className="atmosphere absolute inset-0 z-0" aria-hidden="true" />
       <div className="grid-substrate absolute inset-0 z-0 opacity-60" aria-hidden="true" />
-
-      {/* Readability wash and the hand-off into the page colour */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#eceef1]/55 via-transparent to-[var(--paper)]" />
-      <div className="absolute inset-x-0 bottom-0 z-0 h-52 bg-gradient-to-t from-[var(--paper)] to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 z-0 h-56 bg-gradient-to-t from-[var(--paper)] to-transparent" />
 
       <motion.div
         style={{ y: reduce ? 0 : textY, opacity: reduce ? 1 : fade }}
-        className="relative z-10 mx-auto mt-[-8vh] flex w-full max-w-5xl flex-col items-center px-6 text-center"
+        className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center px-6 text-center"
       >
-        {/* Status pill */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[var(--line-strong)] bg-white/70 px-4 py-1.5"
+          className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-[var(--line-strong)] bg-white/70 px-4 py-1.5"
         >
           <span className="relative flex h-1.5 w-1.5">
             <span className="soft-ping absolute inline-flex h-full w-full rounded-full bg-[var(--verified)]" />
@@ -72,11 +70,12 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        {/* Heading */}
-        <h1 className="mb-7 text-[3.1rem] font-medium leading-[1.02] tracking-[-0.03em] text-[var(--ink)] sm:text-7xl md:text-8xl">
-          <span className="block">
+        {/* Sans statement, serif-italic payoff. The typeface switch is what
+            keeps this from reading as a one-font template. */}
+        <h1 className="mb-8 leading-[0.98] text-[var(--ink)]">
+          <span className="block text-[2.6rem] font-medium tracking-[-0.035em] sm:text-6xl md:text-[4.5rem]">
             {LINE_ONE.map((w, i) => (
-              <span key={w} className="inline-block overflow-hidden pb-[0.09em] align-bottom">
+              <span key={w} className="inline-block overflow-hidden pb-[0.08em] align-bottom">
                 <motion.span className="inline-block" custom={i} variants={word} initial="hidden" animate="show">
                   {w}
                 </motion.span>
@@ -84,9 +83,9 @@ export default function Hero() {
               </span>
             ))}
           </span>
-          <span className="block">
+          <span className="font-display mt-1 block text-[3.4rem] italic sm:text-[4.75rem] md:text-[6.25rem]">
             {LINE_TWO.map((w, i) => (
-              <span key={w} className="inline-block overflow-hidden pb-[0.09em] align-bottom">
+              <span key={w} className="inline-block overflow-hidden pb-[0.1em] align-bottom">
                 <motion.span
                   className={`inline-block ${i === 1 ? 'text-[var(--teal)]' : ''}`}
                   custom={LINE_ONE.length + i}
@@ -106,7 +105,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
-          className="mb-9 max-w-xl text-base leading-relaxed text-[var(--ink-body)] md:text-lg"
+          className="mb-9 max-w-lg text-[0.95rem] leading-relaxed text-[var(--ink-body)] md:text-base"
         >
           Turning days of manual spreadsheet work into scripts that finish in seconds &mdash;
           and prove they got every row.

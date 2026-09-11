@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
 
@@ -11,6 +11,16 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+});
+
+/* High-contrast serif for display type. Paired against Geist, it does the
+   heavy lifting on elegance — a single-typeface site reads as a template. */
+const displaySerif = Instrument_Serif({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -28,12 +38,15 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#f5f4f2",
+  themeColor: "#f6f5f2",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${displaySerif.variable}`}
+    >
       <body className="antialiased">
         <ScrollProgress />
         <div className="grain" aria-hidden="true" />

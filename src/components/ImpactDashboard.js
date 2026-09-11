@@ -25,7 +25,7 @@ function AnimatedCounter({ target, suffix = '' }) {
   return (
     <span ref={ref} className="tabular-nums">
       <motion.span>{text}</motion.span>
-      <span className="text-[0.62em] font-normal">{suffix}</span>
+      <span className="text-[0.55em] align-super font-sans font-normal">{suffix}</span>
     </span>
   );
 }
@@ -41,7 +41,12 @@ const impactMetrics = [
 
 export default function ImpactDashboard() {
   return (
-    <section id="impact" className="relative z-20 -mt-32 px-4 pb-24 sm:px-6 lg:px-8">
+    /* The overhang scales with the breakpoint. A flat -mt-32 collided with the
+       hero buttons on short laptop screens. */
+    <section
+      id="impact"
+      className="relative z-20 -mt-16 px-4 pb-24 sm:-mt-20 sm:px-6 lg:-mt-28 lg:px-8"
+    >
       <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-6">
           {impactMetrics.map((metric, index) => (
@@ -52,16 +57,15 @@ export default function ImpactDashboard() {
               viewport={{ once: true, margin: '0px 0px -60px 0px' }}
               transition={{ duration: 0.7, delay: index * 0.06, ease: EASE }}
               whileHover={{ y: -5 }}
-              className="lift group cursor-default overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--card)] p-5 shadow-[0_1px_2px_rgba(22,22,26,0.04)]"
+              className="lift group cursor-default overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--card)] p-5 shadow-[0_1px_2px_rgba(21,21,26,0.04)]"
             >
-              {/* Accent cap — identifies which story this number belongs to */}
               <span
                 className="mb-4 block h-[3px] w-8 rounded-full transition-[width] duration-500 group-hover:w-14"
                 style={{ backgroundColor: metric.accent }}
                 aria-hidden="true"
               />
 
-              <h3 className="text-[1.75rem] font-medium leading-none tracking-[-0.03em] text-[var(--ink)] md:text-[2rem]">
+              <h3 className="font-display text-[2.1rem] leading-none text-[var(--ink)] md:text-[2.4rem]">
                 <AnimatedCounter target={metric.value} suffix={metric.suffix} />
               </h3>
 

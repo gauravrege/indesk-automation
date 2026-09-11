@@ -47,7 +47,7 @@ export default function TaskMonitor() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: EASE }}
-            className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--ochre)]"
+            className="mb-5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--ochre)]"
           >
             What&rsquo;s Running
           </motion.p>
@@ -56,9 +56,9 @@ export default function TaskMonitor() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.75, ease: EASE }}
-            className="mb-4 text-4xl font-medium tracking-[-0.03em] text-[var(--ink)] md:text-5xl"
+            className="font-display mb-4 text-[2.75rem] leading-[1.05] text-[var(--ink)] md:text-6xl"
           >
-            Mission Control
+            Mission <span className="italic text-[var(--ochre)]">Control</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -115,7 +115,7 @@ export default function TaskMonitor() {
                 </span>
               </div>
 
-              <h3 className="mb-3 text-xl font-medium tracking-[-0.01em] text-[var(--ink)]">
+              <h3 className="font-display mb-3 text-[1.55rem] leading-[1.12] text-[var(--ink)]">
                 {task.title}
               </h3>
               <p className="text-[0.95rem] leading-relaxed text-[var(--ink-soft)]">
