@@ -1,44 +1,55 @@
 @import "tailwindcss";
 
 /* ===============================================================
-   PALETTE — near-monochrome, dark throughout.
+   PALETTE
 
-   Hierarchy is carried by VALUE, not hue. There is one accent and
-   it is a desaturated warm sand, used only to mark the current
-   thing. Saturated colour is what makes an interface look cheap
-   and eager; restraint is what reads as expensive.
+   Near-black ground, one confident accent, four steps of ink.
+   Every ink step is checked against --void and passes WCAG AA.
    =============================================================== */
 :root {
-  /* Surfaces — a narrow, deliberate range */
-  --void:      #0a0a0b;   /* page                         */
-  --surface:   #101012;   /* raised panel                 */
-  --surface-2: #16161a;   /* card                         */
-  --surface-3: #1d1d22;   /* code block, inset            */
+  /* Ground */
+  --void:      #0a0a0c;   /* page                          */
+  --surface:   #101014;   /* raised panel                  */
+  --surface-2: #17171c;   /* card                          */
+  --surface-3: #1e1e25;   /* inset, code                   */
 
-  /* Bone — text, four steps */
-  --bone:      #ece8e0;   /* display and primary  16.2:1  */
-  --bone-2:    #b5b1a8;   /* body                  9.0:1  */
-  --bone-3:    #8a867e;   /* secondary             5.4:1  */
-  --bone-4:    #827f77;   /* micro-labels          5.0:1  */
+  /* Ink — four steps */
+  --ink:       #f6f4f0;   /* display + primary    18.0:1   */
+  --ink-2:     #bdbab3;   /* body                 10.1:1   */
+  --ink-3:     #918d86;   /* secondary             5.9:1   */
+  --ink-4:     #7d7a73;   /* micro-labels          4.6:1   */
 
   /* The single accent */
-  --sand:      #c4b393;   /* current / active     11.0:1  */
-  --sand-dim:  #8d8168;
+  --flare:     #ff4a1c;   /* live, current, active 5.9:1   */
+  --flare-2:   #ff8a5c;   /* hover lift                    */
 
   /* Hairlines */
-  --hair:      rgba(236, 232, 224, 0.09);
-  --hair-2:    rgba(236, 232, 224, 0.16);
-  --hair-3:    rgba(236, 232, 224, 0.28);
+  --hair:   rgba(246, 244, 240, 0.09);
+  --hair-2: rgba(246, 244, 240, 0.17);
+  --hair-3: rgba(246, 244, 240, 0.30);
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* How far below the top each stacked card comes to rest, and how
+     much of the card beneath stays visible as a sliver. */
+  --stack-top: 8.5rem;
+  --stack-step: 0.9rem;
 }
 
 @theme inline {
-  --color-void: var(--void);
-  --color-bone: var(--bone);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-void:  var(--void);
+  --color-ink:   var(--ink);
+  --color-flare: var(--flare);
+  --font-sans:    var(--font-geist-sans);
+  --font-mono:    var(--font-geist-mono);
   --font-display: var(--font-display);
+  --font-quote:   var(--font-quote);
 }
 
+/* ===============================================================
+   BASE
+   =============================================================== */
 html {
   scroll-behavior: smooth;
   background-color: var(--void);
@@ -46,225 +57,331 @@ html {
 
 body {
   background-color: var(--void);
-  color: var(--bone-2);
+  color: var(--ink-2);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-feature-settings: "ss01", "cv01";
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Display serif. Large, light, tightly tracked. */
+::selection { background: var(--flare); color: var(--ink); }
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--flare);
+  outline-offset: 4px;
+}
+
+/* ===============================================================
+   TYPE
+   =============================================================== */
 .font-display {
-  font-family: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
-  font-weight: 400;
-  letter-spacing: -0.018em;
+  font-family: var(--font-display), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.94;
 }
 
-/* The quiet uppercase micro-label that structures every section. */
+.font-display-xl {
+  font-family: var(--font-display), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: 0.82;
+  text-transform: uppercase;
+}
+
+/* The elegant half of the pairing — one or two words inside a
+   heading, never a heading on its own. */
+.font-accent {
+  font-family: var(--font-quote), ui-serif, Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--hair-3);
+}
+
 .eyebrow {
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0.30em;
   text-transform: uppercase;
-  color: var(--bone-4);
+  color: var(--ink-4);
 }
 
-::selection { background: var(--sand); color: var(--void); }
+.type-mega  { font-size: clamp(3.4rem, 16.5vw, 15rem); }
+.type-giant { font-size: clamp(2.6rem, 8.5vw, 7rem); }
+.type-big   { font-size: clamp(2rem, 5vw, 3.6rem); }
 
-:where(a, button, [tabindex]):focus-visible {
-  outline: 1px solid var(--sand);
-  outline-offset: 4px;
+/* Decoding text swaps characters rapidly. Tabular figures and a fixed
+   monospace ensure the line cannot change width while it resolves,
+   which would otherwise reflow everything around it every frame. */
+.decoding {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 /* ===============================================================
-   SCROLLBARS — nearly invisible
+   TEXTURE — static, rasterised once, free to keep on screen
    =============================================================== */
-::-webkit-scrollbar { width: 9px; }
-::-webkit-scrollbar-track { background: var(--void); }
-::-webkit-scrollbar-thumb {
-  background: rgba(236, 232, 224, 0.13);
-  border: 3px solid var(--void);
-  border-radius: 99px;
-}
-::-webkit-scrollbar-thumb:hover { background: rgba(236, 232, 224, 0.26); }
 
-.custom-scrollbar::-webkit-scrollbar { width: 2px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(236, 232, 224, 0.18);
-  border: none;
-  border-radius: 0;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(236, 232, 224, 0.34); }
-
-/* ===============================================================
-   TEXTURE — static, painted once. No animation, no extra layer.
-   =============================================================== */
+/* NO mix-blend-mode. A blend mode on a fixed, full-viewport layer
+   forces the compositor to re-blend the entire page every frame:
+   measured 33.3ms/30fps with it, 16.7ms/60fps without. Same class of
+   mistake as backdrop-filter. */
 .grain {
   position: fixed;
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.028;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* ===============================================================
-   ATMOSPHERE — barely-there light pooling. Radial gradients
-   rasterise once; a large animated blur re-rasterises per frame.
+   THE STACK
+
+   Cards that come to rest one over the other. The lift is a static
+   box-shadow — it is never animated, so it costs one rasterise.
    =============================================================== */
-.atmosphere {
-  background-image:
-    radial-gradient(52% 40% at 50% 0%,   rgba(196, 179, 147, 0.07), transparent 68%),
-    radial-gradient(70% 50% at 50% 100%, rgba(236, 232, 224, 0.025), transparent 70%);
-}
-
-.atmosphere-faint {
-  background-image:
-    radial-gradient(60% 44% at 80% 4%, rgba(196, 179, 147, 0.038), transparent 66%);
-}
-
-/* Hairline grid substrate — one repeating gradient, no elements. */
-.grid-substrate {
-  background-image:
-    linear-gradient(to right, rgba(236, 232, 224, 0.030) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(236, 232, 224, 0.030) 1px, transparent 1px);
-  background-size: 96px 96px;
-  -webkit-mask-image: radial-gradient(78% 66% at 50% 40%, #000 18%, transparent 76%);
-  mask-image: radial-gradient(78% 66% at 50% 40%, #000 18%, transparent 76%);
-}
-
-/* A rule that fades out at both ends. */
-.rule-fade {
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--hair-2), transparent);
+.stack-card {
+  box-shadow:
+    0 -1px 0 0 var(--hair-2),
+    0 -24px 48px -24px rgba(0, 0, 0, 0.9);
 }
 
 /* ===============================================================
-   MARQUEE — drift by default; the scroll wheel drives its speed
-   and direction from JS (see TechStack).
+   AMBIENT MOTION — transform and opacity only
    =============================================================== */
-.marquee-mask {
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+@keyframes breathe {
+  0%, 100% { transform: scale(1);    opacity: 1;    }
+  50%      { transform: scale(0.62); opacity: 0.55; }
 }
-
-/* ===============================================================
-   HOVER — no lifts, no shadows, no bounce. A hairline warms and
-   the surface lightens by a few per cent. That is the whole
-   vocabulary, and the restraint is the point.
-   =============================================================== */
-.plate {
+@keyframes ping {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(3.6); opacity: 0;    }
+}
+.pulse-dot {
   position: relative;
-  background-color: var(--surface-2);
-  border: 1px solid var(--hair);
-  transition: background-color 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 9999px;
+  background: var(--flare);
+  animation: breathe 2.4s var(--ease) infinite;
 }
-.plate:hover {
-  background-color: var(--surface-3);
-  border-color: var(--hair-2);
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--flare);
+  animation: ping 2.4s var(--ease) infinite;
 }
 
-/* A sand rule that draws itself along the top edge on hover. */
+@keyframes cue {
+  0%   { transform: scaleY(0); transform-origin: top;    }
+  45%  { transform: scaleY(1); transform-origin: top;    }
+  55%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.scroll-cue {
+  width: 1px;
+  height: 56px;
+  background: var(--hair-3);
+  transform-origin: top;
+  animation: cue 2.6s var(--ease) infinite;
+}
+
+/* Marquee. The track holds two identical copies of the list, so translating
+   to -50% lands exactly on the seam and the loop is invisible. No JS in the
+   loop at all — it runs on the compositor and costs effectively nothing. */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 46s) linear infinite;
+}
+.marquee-track.reverse { animation-direction: reverse; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* Fades a marquee out at both ends instead of cutting it off. A mask is
+   composited, not re-rasterised, so it is safe on a moving layer. */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+/* A pulse running along a connector, over and over. The band is painted
+   into a gradient and the whole layer is translated across — one transform,
+   no repaint, so a row of these is free. */
+@keyframes wire-x {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+@keyframes wire-y {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(100%); }
+}
+.wire { position: relative; overflow: hidden; }
+.wire::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  animation-duration: 2.6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: var(--wire-delay, 0s);
+}
+.wire-x::after {
+  background: linear-gradient(
+    90deg, transparent 0%, transparent 38%,
+    var(--flare) 50%, transparent 62%, transparent 100%
+  );
+  animation-name: wire-x;
+}
+.wire-y::after {
+  background: linear-gradient(
+    180deg, transparent 0%, transparent 30%,
+    var(--flare) 50%, transparent 70%, transparent 100%
+  );
+  animation-name: wire-y;
+}
+
+/* A caret that blinks at the end of a typed line. */
+@keyframes caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 0.15em;
+  background: var(--flare);
+  vertical-align: text-bottom;
+  animation: caret 1.05s steps(1) infinite;
+}
+
+/* ===============================================================
+   HOVER VOCABULARY
+   =============================================================== */
+
+/* A rule draws itself along the top edge. */
 .edge-draw { position: relative; }
 .edge-draw::after {
   content: "";
   position: absolute;
-  inset: -1px auto auto -1px;
-  width: calc(100% + 2px);
+  top: 0; left: 0; right: 0;
   height: 1px;
-  background: var(--sand);
+  background: var(--flare);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none;
+  transition: transform 0.6s var(--ease);
 }
 .edge-draw:hover::after { transform: scaleX(1); }
 
-/* Underline that wipes in for text links. */
-.link-wipe { position: relative; }
+/* An underline wipes in under a link. */
+.link-wipe { position: relative; display: inline-block; }
 .link-wipe::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: -3px;
-  width: 100%;
+  left: 0; right: 0; bottom: -3px;
   height: 1px;
   background: currentColor;
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.5s var(--ease);
 }
 .link-wipe:hover::after { transform: scaleX(1); transform-origin: left; }
 
+/* A pill fills from the bottom. */
+.chip { position: relative; isolation: isolate; overflow: hidden; }
+.chip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--flare);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.45s var(--ease);
+}
+.chip:hover { color: var(--void); border-color: var(--flare); }
+.chip:hover::before { transform: scaleY(1); }
+
+/* A radial wash follows the pointer inside a card. Position comes from
+   CSS custom properties written by JS — not React state, so a mouse
+   move never triggers a render. */
+.spotlight { position: relative; isolation: isolate; }
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+  background: radial-gradient(
+    26rem circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 74, 28, 0.10),
+    transparent 62%
+  );
+}
+.spotlight:hover::before { opacity: 1; }
+
+/* A block of colour crosses the element, left to right. */
+.sweep { position: relative; isolation: isolate; }
+.sweep::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to right, rgba(255, 74, 28, 0.12), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease);
+}
+.sweep:hover::before { transform: scaleX(1); }
+
 /* ===============================================================
-   CURSOR — the native arrow is hidden only once the custom one has
-   actually mounted, so a JS failure can never leave the page
-   without a pointer.
+   UTILITIES
    =============================================================== */
+
+/* The custom cursor hides the native arrow, but only after its script
+   has mounted and added this class — so if the script ever fails, the
+   visitor still has a pointer. */
 .cursor-hidden,
 .cursor-hidden * { cursor: none !important; }
 
-/* ===============================================================
-   PULSE — a slow breath on the one thing that is live. Opacity and
-   transform only, so it composites and never repaints.
-   =============================================================== */
-@keyframes pulse-breath {
-  0%, 100% { opacity: 0.35; transform: scale(0.82); }
-  50%      { opacity: 1;    transform: scale(1);    }
-}
-.pulse-dot {
-  animation: pulse-breath 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
+.custom-scrollbar::-webkit-scrollbar { width: 2px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: var(--hair-2); }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--hair-3); }
+.custom-scrollbar { scrollbar-width: thin; scrollbar-color: var(--hair-2) transparent; }
 
-/* ===============================================================
-   SCROLL CUE — a hairline that fills downward and resets.
-   =============================================================== */
-.scroll-cue { position: relative; overflow: hidden; }
-.scroll-cue::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--sand);
-  transform: translateY(-100%);
-  animation: cue-fall 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-@keyframes cue-fall {
-  0%        { transform: translateY(-100%); }
-  55%, 100% { transform: translateY(100%);  }
-}
-
-/* ===============================================================
-   ROW SWEEP — a pane of light crosses the index row on hover,
-   left to right, and leaves on the same side it entered.
-   =============================================================== */
-.row-sweep::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(196, 179, 147, 0.10),
-    rgba(196, 179, 147, 0.03) 55%,
-    transparent
-  );
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none;
-}
-.row-sweep:hover::before { transform: scaleX(1); }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* ===============================================================
    REDUCED MOTION
    =============================================================== */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .scroll-cue::after,
-  .pulse-dot { animation: none !important; }
+  .pulse-dot,
+  .pulse-dot::after,
+  .scroll-cue,
+  .caret,
+  .marquee-track,
+  .wire::after {
+    animation: none !important;
+  }
+  .wire::after { opacity: 0; }
+  .scroll-cue { transform: scaleY(1); }
+  .caret { opacity: 1; }
   *, *::before, *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;

@@ -1,6 +1,6 @@
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Geist, Geist_Mono, Archivo, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import ScrollProgress from "@/components/ScrollProgress";
+import StickyHeader from "@/components/StickyHeader";
 import Cursor from "@/components/Cursor";
 
 const geistSans = Geist({
@@ -15,10 +15,20 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-/* High-contrast serif for display type. Paired against Geist, it does the
-   heavy lifting on elegance — a single-typeface site reads as a template. */
-const displaySerif = Instrument_Serif({
+/* The display face. A true grotesque — it holds its shape when set
+   enormous and tracked tight, which is what the whole layout leans on. */
+const displayFont = Archivo({
   variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+/* Used only for one or two accent words inside a headline. The
+   contrast against the grotesque is the point; it is never asked to
+   carry a heading on its own. */
+const quoteFont = Instrument_Serif({
+  variable: "--font-quote",
   subsets: ["latin"],
   weight: "400",
   style: ["normal", "italic"],
@@ -29,27 +39,27 @@ export const metadata = {
   metadataBase: new URL("https://indesk-automation.vercel.app"),
   title: "Gaurav Rege — Automation Engineer Intern",
   description:
-    "Weekly engineering log of an automation internship: RPA bots, zero-dependency Excel tooling, and data pipelines that replace days of manual work with seconds.",
+    "Weekly engineering log of an automation internship, July to September 2026: a Playwright bot for the InDesk portal, an 817-line Apps Script behind a 9,090-row dues dashboard, and a dependency-free .xlsx consolidator.",
   openGraph: {
     title: "Gaurav Rege — Automation Engineer Intern",
     description:
-      "RPA bots, zero-dependency Excel tooling, and data pipelines that replace days of manual work with seconds.",
+      "Ten automation tools in ten weeks: a Playwright portal bot, an Apps Script dues dashboard over 9,090 rows, and a dependency-free .xlsx consolidator.",
     type: "website",
   },
 };
 
 export const viewport = {
-  themeColor: "#0a0a0b",
+  themeColor: "#0a0a0c",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${displaySerif.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${displayFont.variable} ${quoteFont.variable}`}
     >
       <body className="antialiased">
-        <ScrollProgress />
+        <StickyHeader />
         <Cursor />
         <div className="grain" aria-hidden="true" />
         {children}

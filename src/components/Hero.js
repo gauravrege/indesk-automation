@@ -1,189 +1,141 @@
 'use client';
 
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useSpring,
-  useReducedMotion,
-} from 'framer-motion';
-import { useRef, useEffect } from 'react';
-import Magnetic from './Magnetic';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import useCalmMotion from '@/lib/useCalmMotion';
+import Decode from './Decode';
 
-/* Long, flat easing. Nothing overshoots; nothing hurries. */
 const EASE = [0.22, 1, 0.36, 1];
 
-const LINE_ONE = ['My', 'work', 'is'];
-const LINE_TWO = ['rebuilding', 'systems'];
-
-const word = {
-  hidden: { y: '112%' },
-  show: (i) => ({
-    y: '0%',
-    transition: { duration: 1.5, delay: 0.25 + i * 0.11, ease: EASE },
-  }),
+/**
+ * Still colour behind the fold, painted as the section's OWN background
+ * rather than as a child layer — one fewer full-viewport translucent
+ * layer to composite under the fixed grain sheet.
+ *
+ * Still gradients only. A gradient that never moves is rasterised once;
+ * animating a layer this size is what cost this site 50fps once before.
+ */
+const WASH = {
+  backgroundImage:
+    'radial-gradient(58rem 38rem at 8% 104%, rgba(255,74,28,0.14), transparent 62%),' +
+    'radial-gradient(44rem 30rem at 96% -8%, rgba(255,138,92,0.07), transparent 60%)',
 };
 
 export default function Hero() {
   const ref = useRef(null);
-  const reduce = useReducedMotion();
+  const reduce = useCalmMotion();
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
   });
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '14%']);
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-9%']);
-  const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  /* Pointer parallax. The moon drifts against the cursor, the type drifts with
-     it by a smaller amount — two planes, so the hero has depth rather than
-     being a flat picture. Values are written outside React, never per render. */
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const soft = { stiffness: 42, damping: 22, mass: 0.9 };
-  const moonX = useSpring(useTransform(px, [-0.5, 0.5], [26, -26]), soft);
-  const moonY = useSpring(useTransform(py, [-0.5, 0.5], [18, -18]), soft);
-  const typeX = useSpring(useTransform(px, [-0.5, 0.5], [-9, 9]), soft);
-  const typeY = useSpring(useTransform(py, [-0.5, 0.5], [-6, 6]), soft);
-
-  useEffect(() => {
-    if (reduce || !window.matchMedia('(pointer: fine)').matches) return;
-    const onMove = (e) => {
-      px.set(e.clientX / window.innerWidth - 0.5);
-      py.set(e.clientY / window.innerHeight - 0.5);
-    };
-    window.addEventListener('mousemove', onMove, { passive: true });
-    return () => window.removeEventListener('mousemove', onMove);
-  }, [px, py, reduce]);
+  // The hero sits still while the page scrolls over the top of it, easing
+  // back a little as it goes. Transform and opacity only.
+  const scale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 0.94]);
+  const fade = useTransform(scrollYProgress, [0, 0.9], [1, reduce ? 1 : 0.3]);
 
   return (
-    /* The bottom padding reserves the strip the index overlaps into, so
-       nothing here can ever collide with what follows. */
     <section
+      id="top"
       ref={ref}
-      className="relative flex h-[96vh] min-h-[620px] w-full flex-col items-center justify-center overflow-hidden pb-[clamp(6rem,14vh,10rem)]"
+      style={WASH}
+      className="sticky top-0 z-0 flex h-[100svh] flex-col justify-between overflow-hidden px-4 pt-7 pb-8 sm:px-8"
     >
-      {/* The moon, held well back. It is texture, not a picture. */}
+      {/* ---------- Top rail ---------- */}
       <motion.div
-        style={{ y: reduce ? 0 : bgY }}
-        className="absolute inset-0 z-0 scale-110"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.9, delay: 0.05, ease: EASE }}
+        className="flex items-center justify-between gap-4 border-b border-[var(--hair)] pb-5"
       >
-        <motion.div
-          style={{
-            x: reduce ? 0 : moonX,
-            y: reduce ? 0 : moonY,
-            backgroundImage: 'url(/bg-moon.jpg)',
-          }}
-          className="absolute inset-0 scale-110 bg-cover bg-center opacity-[0.30]"
-        />
-        <div className="absolute inset-0 bg-[var(--void)]/45" />
+        <p className="eyebrow">InDesk Automation</p>
+        <p className="eyebrow hidden sm:block">Mumbai, IN</p>
+        <p className="eyebrow flex items-center gap-2.5">
+          <span className="pulse-dot" aria-hidden="true" />
+          Internship Live
+        </p>
       </motion.div>
 
-      <div className="atmosphere absolute inset-0 z-0" aria-hidden="true" />
-      <div className="grid-substrate absolute inset-0 z-0" aria-hidden="true" />
-      <div className="absolute inset-x-0 bottom-0 z-0 h-64 bg-gradient-to-t from-[var(--void)] via-[var(--void)]/80 to-transparent" />
+      <motion.div style={{ scale, opacity: fade }} className="flex flex-1 flex-col justify-between origin-bottom">
+        {/* ---------- The statement, decoding in ---------- */}
+        <div className="pt-14 md:pt-20">
+          <Decode
+            text="Ten tools in ten weeks for a finance back office."
+            as="p"
+            delay={0.35}
+            tick={30}
+            charsPerTick={1.05}
+            className="font-display block max-w-4xl text-[1.6rem] leading-[1.22] text-[var(--ink)] sm:text-[2.2rem] md:text-[3rem]"
+          />
 
-      <motion.div
-        style={{ y: reduce ? 0 : textY, opacity: reduce ? 1 : fade }}
-        className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center px-6 text-center"
-      >
-        <motion.div
-          style={{ x: reduce ? 0 : typeX, y: reduce ? 0 : typeY }}
-          className="w-full"
-        >
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.4, delay: 0.1, ease: EASE }}
-            className="eyebrow mb-12"
-          >
-            Automation Engineer &nbsp;/&nbsp; Internship 2026
-          </motion.p>
-
-          <h1 className="font-display mb-12 leading-[0.94] text-[var(--bone)]">
-            <span className="block text-[2.9rem] sm:text-[4.25rem] md:text-[5.5rem]">
-              {LINE_ONE.map((w, i) => (
-                <span key={w} className="inline-block overflow-hidden pb-[0.09em] align-bottom">
-                  <motion.span className="inline-block" custom={i} variants={word} initial="hidden" animate="show">
-                    {w}
-                  </motion.span>
-                  {i < LINE_ONE.length - 1 && <span>&nbsp;</span>}
-                </span>
-              ))}
-            </span>
-            <span className="block text-[3.1rem] italic sm:text-[4.5rem] md:text-[6rem]">
-              {LINE_TWO.map((w, i) => (
-                <span key={w} className="inline-block overflow-hidden pb-[0.11em] align-bottom">
-                  <motion.span
-                    className="inline-block"
-                    custom={LINE_ONE.length + i}
-                    variants={word}
-                    initial="hidden"
-                    animate="show"
-                  >
-                    {w}
-                  </motion.span>
-                  {i < LINE_TWO.length - 1 && <span>&nbsp;</span>}
-                </span>
-              ))}
-            </span>
-          </h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
+          {/* Three actual things that exist, with their real numbers — the
+              detail is the point, not an adjective about the detail. */}
+          <motion.ul
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.3, delay: 0.95, ease: EASE }}
-            className="mx-auto mb-14 max-w-md text-[0.9rem] leading-[1.9] text-[var(--bone-3)]"
+            transition={{ duration: 1, delay: 1.5, ease: EASE }}
+            className="mt-8 max-w-2xl space-y-3 text-[0.92rem] leading-[1.65] text-[var(--ink-3)] md:text-[0.98rem]"
           >
-            Days of manual spreadsheet work, reduced to scripts that finish in seconds
-            &mdash; and prove they got every row.
-          </motion.p>
+            {[
+              'A Playwright bot that logs into the InDesk portal every day, exports two reports and writes them into Google Sheets unattended.',
+              'An 817-line Apps Script behind a dashboard built on 9,090 rows of outstanding dues, across 14 regions and 4 zones.',
+              'An .xlsx reader and writer with no dependencies at all — written on Node’s built-in zlib, because an .xlsx is a zip of XML.',
+            ].map((line) => (
+              <li key={line} className="relative pl-5">
+                <span
+                  className="absolute left-0 top-[0.72em] h-px w-2.5 bg-[var(--flare)]"
+                  aria-hidden="true"
+                />
+                {line}
+              </li>
+            ))}
+          </motion.ul>
+        </div>
 
-          {/* Text links, not buttons. A button asks; a link simply is. */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.3, delay: 1.15, ease: EASE }}
-            className="flex items-center justify-center gap-10"
-          >
-            <Magnetic>
-              <a
-                href="#index"
-                className="link-wipe text-[0.78rem] uppercase tracking-[0.22em] text-[var(--bone)] transition-colors duration-500 hover:text-[var(--sand)]"
-              >
-                The Work
-              </a>
-            </Magnetic>
-            <span className="h-3 w-px bg-[var(--hair-2)]" aria-hidden="true" />
-            <Magnetic>
-              <button
-                onClick={() =>
-                  document.getElementById('impact')?.scrollIntoView({ behavior: 'smooth' })
-                }
-                className="link-wipe text-[0.78rem] uppercase tracking-[0.22em] text-[var(--bone-3)] transition-colors duration-500 hover:text-[var(--bone)]"
-              >
-                In Numbers
-              </button>
-            </Magnetic>
-          </motion.div>
-        </motion.div>
+        {/* ---------- The name, sitting on the baseline ---------- */}
+        {/* One line, not two. "GAURAV REGE" set solid is about 7.4x its font
+            size wide, so min() picks the largest size that still fits the
+            viewport; wrapping to a second line costs ~240px of height and
+            pushed the bottom rail out of a 900px-tall screen entirely. */}
+        <h1 className="font-display-xl mt-10 whitespace-nowrap text-[min(12vw,11.5rem)] text-[var(--ink)]">
+          <span className="block overflow-hidden" style={{ paddingBottom: '0.05em' }}>
+            <motion.span
+              className="block"
+              initial={{ y: '108%' }}
+              animate={{ y: '0%' }}
+              transition={{ duration: 1.2, delay: 0.2, ease: EASE }}
+            >
+              Gaurav Rege
+            </motion.span>
+          </span>
+        </h1>
       </motion.div>
 
-      {/* A hairline that fills downward, over and over. The only thing on the
-          page that repeats — it reads as a pulse, not an animation. */}
+      {/* ---------- Bottom rail ---------- */}
       <motion.div
-        style={{ opacity: reduce ? 1 : fade }}
-        className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2"
-        aria-hidden="true"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.9, delay: 1.1, ease: EASE }}
+        className="flex items-end justify-between gap-6 border-t border-[var(--hair)] pt-5"
       >
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.4, delay: 1.6, ease: EASE }}
-          className="scroll-cue block h-14 w-px bg-[var(--hair-2)]"
-        />
+        <div className="flex items-center gap-5">
+          <span className="scroll-cue block" aria-hidden="true" />
+          <p className="eyebrow">Scroll</p>
+        </div>
+
+        <dl className="flex items-baseline gap-8 sm:gap-12">
+          <div className="text-right">
+            <dt className="eyebrow mb-2">Tools</dt>
+            <dd className="font-display text-[1.4rem] tabular-nums text-[var(--ink)]">10</dd>
+          </div>
+          <div className="text-right">
+            <dt className="eyebrow mb-2">Logged</dt>
+            <dd className="font-display text-[1.4rem] tabular-nums text-[var(--ink)]">
+              Jul&ndash;Sep 2026
+            </dd>
+          </div>
+        </dl>
       </motion.div>
     </section>
   );

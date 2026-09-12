@@ -1,79 +1,111 @@
 'use client';
 
-import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import Odometer from './Odometer';
+import Decode from './Decode';
 
 const EASE = [0.22, 1, 0.36, 1];
 
-/** Counts up once, slowly, on first sight. */
-function AnimatedCounter({ target, suffix = '' }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '0px 0px -80px 0px' });
-
-  const count = useMotionValue(0);
-  const smooth = useSpring(count, { stiffness: 34, damping: 22, mass: 1.1 });
-  // A spring approaches asymptotically, so it can rest a hair below and round
-  // DOWN — 10,000 rendering as 9,999. Snap once within one unit.
-  const text = useTransform(smooth, (v) =>
-    (target - v < 1 ? target : Math.round(v)).toLocaleString('en-US')
-  );
-
-  useEffect(() => {
-    if (isInView) count.set(target);
-  }, [isInView, target, count]);
-
-  return (
-    <span ref={ref} className="tabular-nums">
-      <motion.span>{text}</motion.span>
-      <span className="align-super text-[0.42em] tracking-normal">{suffix}</span>
-    </span>
-  );
-}
-
+/* Every figure here is traceable to a specific week's log — the `note` says
+   which. Do not add a number that cannot be pointed at.
+   ("15+ hours saved weekly" and "100% reconciled" used to sit in this list.
+   Neither appears anywhere in the logs or the code, so both are gone.) */
 const impactMetrics = [
-  { value: 10, suffix: '', label: 'Projects' },
-  { value: 10000, suffix: '+', label: 'Rows / run' },
-  { value: 40, suffix: '+', label: 'Sheets merged' },
-  { value: 30, suffix: 's', label: 'Replaces a day' },
-  { value: 15, suffix: '+', label: 'Hours / week' },
-  { value: 100, suffix: '%', label: 'Reconciled' },
+  {
+    value: 10, suffix: '',
+    label: 'Tools shipped',
+    note: 'Weeks 01–10, July to September 2026',
+  },
+  {
+    value: 9090, suffix: '',
+    label: 'Rows behind the dues dashboard',
+    note: 'The InDesk outstanding report — 14 regions, 4 zones · weeks 01–02',
+  },
+  {
+    value: 10000, suffix: '+',
+    label: 'Transaction rows per run',
+    note: 'Customer statements merged in a single pass · week 09',
+  },
+  {
+    value: 40, suffix: '+',
+    label: 'Customer sheets consolidated',
+    note: 'One sheet per customer, spread across several workbooks · week 09',
+  },
+  {
+    value: 30, suffix: 's',
+    label: 'Replaces a full day of copying',
+    note: 'Statement consolidation, previously done by hand · week 09',
+  },
+  {
+    value: 15, suffix: 'min',
+    label: 'Of daily portal work removed',
+    note: 'Log in, export, filter, paste — now unattended · week 04',
+  },
 ];
 
 export default function ImpactDashboard() {
   return (
-    /* A band, not a dashboard. Hairlines instead of cards, and no negative
-       margin — so nothing above can ever overlap it. */
-    <section id="impact" className="relative px-5 py-28 sm:px-8 md:py-36">
-      <div className="mx-auto max-w-6xl">
-        <div className="rule-fade mb-14" aria-hidden="true" />
+    <section id="impact" className="relative px-4 py-24 sm:px-8 md:py-32">
+      <div className="mx-auto max-w-5xl">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: EASE }}
+          className="mb-14 flex items-end justify-between gap-6 border-b border-[var(--hair)] pb-6 md:mb-18"
+        >
+          <div>
+            <p className="eyebrow mb-5">Sourced from the logs below</p>
+            <Decode
+              text="The numbers"
+              as="h2"
+              className="font-display type-big block text-[var(--ink)]"
+            />
+          </div>
+          <p className="eyebrow hidden shrink-0 sm:block">Weeks 01–10</p>
+        </motion.div>
 
-        <div className="grid grid-cols-2 gap-y-12 md:grid-cols-3 lg:grid-cols-6">
-          {impactMetrics.map((metric, index) => (
-            <motion.div
+        <ul>
+          {impactMetrics.map((metric, i) => (
+            <motion.li
               key={metric.label}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: '0px 0px -70px 0px' }}
-              transition={{ duration: 1.2, delay: index * 0.09, ease: EASE }}
-              className="group px-5 text-center lg:border-l lg:border-[var(--hair)] lg:first:border-l-0"
+              transition={{ duration: 0.8, delay: i * 0.06, ease: EASE }}
+              className="sweep group grid grid-cols-1 items-baseline gap-x-8 gap-y-2 border-b border-[var(--hair)] px-2 py-7 sm:grid-cols-[minmax(0,1fr)_auto] md:py-9"
             >
-              <p className="font-display text-[2.4rem] leading-none text-[var(--bone)] transition-colors duration-700 group-hover:text-[var(--sand)] md:text-[2.9rem]">
-                <AnimatedCounter target={metric.value} suffix={metric.suffix} />
-              </p>
-              <motion.span
-                aria-hidden="true"
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true, margin: '0px 0px -70px 0px' }}
-                transition={{ duration: 1.1, delay: 0.35 + index * 0.09, ease: EASE }}
-                className="mx-auto mt-5 block h-px w-8 origin-center bg-[var(--sand-dim)]"
-              />
-              <p className="eyebrow mt-4">{metric.label}</p>
-            </motion.div>
-          ))}
-        </div>
+              <span className="font-display-xl text-[2.8rem] leading-[0.9] text-[var(--ink)] transition-colors duration-700 group-hover:text-[var(--flare)] sm:text-[3.4rem] md:text-[4.4rem]">
+                <Odometer value={metric.value} suffix={metric.suffix} />
+              </span>
 
-        <div className="rule-fade mt-14" aria-hidden="true" />
+              <span className="flex flex-col gap-2 sm:items-end sm:text-right">
+                <span className="eyebrow transition-colors duration-700 group-hover:text-[var(--ink-2)]">
+                  {metric.label}
+                </span>
+                <span className="text-[0.82rem] leading-[1.6] text-[var(--ink-4)]">
+                  {metric.note}
+                </span>
+              </span>
+            </motion.li>
+          ))}
+        </ul>
+
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+          transition={{ duration: 1, ease: EASE }}
+          className="mt-14 max-w-3xl text-[0.98rem] leading-[1.8] text-[var(--ink-3)] md:text-[1.05rem]"
+        >
+          Each figure comes from the log it sits next to. The statement tool also
+          checks its own arithmetic on every sheet &mdash;{' '}
+          <span className="font-mono text-[0.88em] text-[var(--flare-2)]">
+            Opening Bal. + sum(Net Amount)
+          </span>{' '}
+          has to equal the total printed on that sheet, or the run fails rather than
+          quietly handing back a short table.
+        </motion.p>
       </div>
     </section>
   );

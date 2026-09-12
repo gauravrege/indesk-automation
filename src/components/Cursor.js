@@ -61,7 +61,7 @@ export default function Cursor() {
         style={{ x, y }}
         animate={{ opacity: visible ? (hovering ? 0 : 1) : 0 }}
         transition={{ duration: 0.25 }}
-        className="pointer-events-none fixed left-0 top-0 z-[90] -ml-[2px] -mt-[2px] h-1 w-1 rounded-full bg-[var(--sand)]"
+        className="pointer-events-none fixed left-0 top-0 z-[90] -ml-[2px] -mt-[2px] h-1 w-1 rounded-full bg-[var(--flare)]"
       />
       <motion.div
         aria-hidden="true"
@@ -70,8 +70,8 @@ export default function Cursor() {
           opacity: visible ? 1 : 0,
           scale: hovering ? 1.9 : 1,
           borderColor: hovering
-            ? 'rgba(196,179,147,0.85)'
-            : 'rgba(236,232,224,0.32)',
+            ? 'rgba(255,74,28,0.85)'
+            : 'rgba(246,244,240,0.32)',
         }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className="pointer-events-none fixed left-0 top-0 z-[90] -ml-[13px] -mt-[13px] h-[26px] w-[26px] rounded-full border"

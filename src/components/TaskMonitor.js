@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Reveal from './Reveal';
+import Decode from './Decode';
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -9,81 +9,89 @@ const tasks = [
   {
     id: 1,
     state: 'Active',
-    title: 'Statement Consolidation Rollout',
+    title: 'Statement consolidation rollout',
     description:
-      'Customer Statement Transformer delivered and in use. Next: widen it to the remaining branch statement formats.',
+      'Delivered in week 09 and in use. Sheets are grouped by column layout and the most common layout wins, so anything shaped differently is skipped by name. Next: the branch statement layouts currently being skipped that way.',
     current: true,
   },
   {
     id: 2,
     state: 'Queued',
-    title: 'Invoice Match at Scale',
+    title: 'Invoice match across the network drives',
     description:
-      'Invoice PDF matcher shipped. Next: run it across the shared network drives instead of one machine at a time.',
+      'Week 10. Reads invoice numbers from a spreadsheet, strips separators, then walks every drive on the machine for PDFs whose names match. Next: point it at the shared drives instead of one PC at a time.',
     current: false,
   },
   {
     id: 3,
     state: 'Later',
-    title: 'RPA Pipeline Hardening',
+    title: 'Unattended runs for the portal bot',
     description:
-      'Portal credentials moved out of source into environment variables. Next: scheduled unattended runs with failure alerts.',
+      'Week 04. The portal password now comes from a .env file and the Chrome session profile is out of version control. Next: put the run on a schedule, with an alert when an export comes back empty.',
     current: false,
   },
 ];
 
 export default function TaskMonitor() {
   return (
-    <section className="relative px-5 py-24 sm:px-8 md:py-32">
-      <div className="mx-auto max-w-6xl">
+    <section id="now" className="relative px-4 py-24 sm:px-8 md:py-32">
+      <div className="mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: EASE }}
-          className="mb-14 flex items-baseline justify-between gap-6 border-b border-[var(--hair)] pb-6"
+          transition={{ duration: 1, ease: EASE }}
+          className="mb-14 flex items-end justify-between gap-6 border-b border-[var(--hair)] pb-6"
         >
-          <Reveal
-            text="In Progress"
-            as="h2"
-            className="font-display text-[2.4rem] leading-none text-[var(--bone)] md:text-[3.25rem]"
-          />
-          <p className="eyebrow shrink-0">Current</p>
+          <div>
+            <p className="eyebrow mb-5">As of 12 September 2026</p>
+            <Decode
+              text="In progress"
+              as="h2"
+              className="font-display type-big block text-[var(--ink)]"
+            />
+          </div>
+          <p className="eyebrow hidden shrink-0 sm:block">03 open</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-px bg-[var(--hair)] md:grid-cols-3">
-          {tasks.map((task, index) => (
-            <motion.div
+        <ul>
+          {tasks.map((task, i) => (
+            <motion.li
               key={task.id}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '0px 0px -70px 0px' }}
-              transition={{ duration: 1.1, delay: index * 0.1, ease: EASE }}
-              className="edge-draw group relative bg-[var(--void)] p-8 transition-colors duration-700 hover:bg-[var(--surface)] md:p-10"
+              transition={{ duration: 0.9, delay: i * 0.08, ease: EASE }}
+              className="sweep edge-draw group grid grid-cols-1 gap-x-10 gap-y-4 border-b border-[var(--hair)] px-2 py-8 md:grid-cols-[9rem_1fr] md:py-10"
             >
               <p
-                className={`eyebrow mb-8 flex items-center gap-2.5 ${
-                  task.current ? 'text-[var(--sand)]' : ''
+                className={`eyebrow flex items-center gap-2.5 pt-1 ${
+                  task.current ? 'text-[var(--flare)]' : ''
                 }`}
               >
-                {task.current && (
+                {task.current ? (
+                  <span className="pulse-dot" aria-hidden="true" />
+                ) : (
                   <span
-                    className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--sand)]"
+                    className="inline-block h-1.5 w-1.5 rounded-full border border-[var(--ink-4)]"
                     aria-hidden="true"
                   />
                 )}
                 {task.state}
               </p>
 
-              <h3 className="font-display mb-4 text-[1.5rem] leading-[1.18] text-[var(--bone)] md:text-[1.7rem]">
-                {task.title}
-              </h3>
-              <p className="text-[0.86rem] leading-[1.85] text-[var(--bone-3)]">
-                {task.description}
-              </p>
-            </motion.div>
+              <div className="min-w-0">
+                <h3 className="font-display text-[1.35rem] leading-[1.14] text-[var(--ink)] transition-transform duration-700 group-hover:translate-x-1.5 md:text-[1.75rem]">
+                  {task.title}
+                  {task.current && <span className="caret" aria-hidden="true" />}
+                </h3>
+                <p className="mt-3 max-w-2xl text-[0.88rem] leading-[1.85] text-[var(--ink-3)]">
+                  {task.description}
+                </p>
+              </div>
+            </motion.li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
