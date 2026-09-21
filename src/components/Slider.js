@@ -149,7 +149,7 @@ export default function Slider({ logs = [] }) {
       <div className="mx-auto max-w-5xl">
         <div className="mb-12 flex items-end justify-between gap-6 border-b border-[var(--hair)] pb-6">
           <div>
-            <p className="eyebrow mb-5">Weeks 01&ndash;11, July to September 2026</p>
+            <p className="eyebrow mb-5">Weeks 01&ndash;12, July to September 2026</p>
             <Decode
               text="The build log"
               as="h2"

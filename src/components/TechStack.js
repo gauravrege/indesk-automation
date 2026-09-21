@@ -11,7 +11,7 @@ const groups = [
   { key: 'Languages', items: ['JavaScript', 'Python'] },
   { key: 'Web', items: ['Node.js', 'Next.js', 'Tailwind', 'Framer Motion', 'esbuild'] },
   { key: 'Automation', items: ['Playwright', 'Google Apps Script', 'Sheets API', 'GitHub CLI'] },
-  { key: 'Data', items: ['xlsx', 'openpyxl', 'xlsxwriter', 'pyxlsb', 'pdf.js', 'ExcelJS'] },
+  { key: 'Data', items: ['xlsx', 'openpyxl', 'xlsxwriter', 'pyxlsb', 'pdf.js', 'ExcelJS', 'JSZip'] },
 ];
 
 export default function TechStack() {

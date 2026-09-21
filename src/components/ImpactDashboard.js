@@ -24,13 +24,13 @@ const EASE = [0.22, 1, 0.36, 1];
    many happened to be in the test folder. Capability counts stay exact — 13
    airlines is 13 airlines, and rounding it down would give away three of them.
 
-   The count is 10 tools over 11 logged weeks: week 05 is this site, which is
+   The count is 11 tools over 12 logged weeks: week 05 is this site, which is
    not a tool. Keep that stated in the note or the two numbers read as a slip. */
 const impactMetrics = [
   {
-    value: 10, suffix: '',
+    value: 11, suffix: '',
     label: 'Tools made',
-    note: 'Over 11 logged weeks, July to September 2026 · week 05 is this site, not a tool',
+    note: 'Over 12 logged weeks, July to September 2026 · week 05 is this site, not a tool',
   },
   {
     value: 30, suffix: 's',
@@ -78,7 +78,7 @@ export default function ImpactDashboard() {
               className="font-display type-big block text-[var(--ink)]"
             />
           </div>
-          <p className="eyebrow hidden shrink-0 sm:block">Weeks 01–11</p>
+          <p className="eyebrow hidden shrink-0 sm:block">Weeks 01–12</p>
         </motion.div>
 
         <ul>
