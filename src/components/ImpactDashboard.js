@@ -19,6 +19,11 @@ const EASE = [0.22, 1, 0.36, 1];
    Rows are mentioned once, on purpose. The rest of the list is time and
    hand-work removed, which is what these tools are actually for.
 
+   Sample sizes are rounded and marked: 100+, 40+, 10,000+. An exact 141 reads
+   as a claim and invites "why 141?", when the honest answer is that it is how
+   many happened to be in the test folder. Capability counts stay exact — 13
+   airlines is 13 airlines, and rounding it down would give away three of them.
+
    The count is 10 tools over 11 logged weeks: week 05 is this site, which is
    not a tool. Keep that stated in the note or the two numbers read as a slip. */
 const impactMetrics = [
@@ -34,7 +39,7 @@ const impactMetrics = [
   },
   {
     value: 2, suffix: 's',
-    label: 'To read a folder of 141 invoices',
+    label: 'To read a folder of 100+ invoices',
     note: 'GST invoices from 13 airlines — an afternoon of typing before this · week 11',
   },
   {

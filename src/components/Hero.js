@@ -82,7 +82,7 @@ export default function Hero() {
           >
             {[
               'The daily portal round now runs on its own — log in, pull two reports, file them in Google Sheets. Fifteen minutes a day, back.',
-              'A folder of airline GST invoices used to be an afternoon of typing. 141 of them are now read and written into the sheet in under two seconds.',
+              'A folder of airline GST invoices used to be an afternoon of typing. Over a hundred of them are now read and written into the sheet in under two seconds.',
               'Merging customer statements was a full day of copying. It is 30 seconds now, and the tool checks every sheet adds up before it hands anything back.',
             ].map((line) => (
               <li key={line} className="relative pl-5">

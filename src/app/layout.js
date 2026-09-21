@@ -43,7 +43,7 @@ export const metadata = {
   openGraph: {
     title: "Gaurav Rege — Automation Engineer Intern",
     description:
-      "Ten tools in eleven weeks, each one replacing a job done by hand: a full day of copying done in 30 seconds, 141 invoices read in two, and the daily portal round running unattended.",
+      "Ten tools in eleven weeks, each one replacing a job done by hand: a full day of copying done in 30 seconds, 100+ invoices read in two, and the daily portal round running unattended.",
     type: "website",
   },
 };
