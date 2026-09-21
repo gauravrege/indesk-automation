@@ -41,7 +41,7 @@ export default function Footer({ repoCount = 0, total = 0 }) {
         </motion.p>
 
         <Decode
-          text="Ten weeks of work, logged week by week."
+          text="Eleven weeks of work, logged week by week."
           as="h2"
           tick={30}
           charsPerTick={1.1}
@@ -55,14 +55,14 @@ export default function Footer({ repoCount = 0, total = 0 }) {
           transition={{ duration: 1, delay: 0.2, ease: EASE }}
           className="mt-9 max-w-2xl text-[0.95rem] leading-[1.8] text-[var(--ink-3)] md:text-[1.02rem]"
         >
-          Automation engineer intern, Mumbai. Node, Python and Playwright pointed at
-          Excel, Google Sheets and PDFs &mdash; mostly taking steps out of finance
-          workflows that were being done by hand.{' '}
+          Automation engineer intern, Mumbai. I build small tools that take the
+          manual steps out of everyday office work &mdash; reading invoices, filling
+          spreadsheets, and running the daily jobs that used to be done by hand.{' '}
           {repoCount > 0 && (
             <>
-              {repoCount} of the {total} weeks link to a public repository; the rest
-              were Google Sheets and Apps Script work that lives in the company&rsquo;s
-              own files.
+              {repoCount} of the {total} weeks link to a public repo. The rest were
+              Google Sheets and Apps Script work that lives in the company&rsquo;s own
+              files.
             </>
           )}
         </motion.p>

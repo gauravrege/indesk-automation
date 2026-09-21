@@ -61,7 +61,7 @@ export default function Hero() {
         {/* ---------- The statement, decoding in ---------- */}
         <div className="pt-14 md:pt-20">
           <Decode
-            text="Ten tools in ten weeks for a finance back office."
+            text="Ten tools in eleven weeks. Each one replaced a job done by hand."
             as="p"
             delay={0.35}
             tick={30}
@@ -69,8 +69,9 @@ export default function Hero() {
             className="font-display block max-w-4xl text-[1.6rem] leading-[1.22] text-[var(--ink)] sm:text-[2.2rem] md:text-[3rem]"
           />
 
-          {/* Three actual things that exist, with their real numbers — the
-              detail is the point, not an adjective about the detail. */}
+          {/* Three real things, each with the number that shows what it was
+              worth. What the tool does for the person using it comes first;
+              how it is built is the stack section's job, not this one. */}
           <motion.ul
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -78,9 +79,9 @@ export default function Hero() {
             className="mt-8 max-w-2xl space-y-3 text-[0.92rem] leading-[1.65] text-[var(--ink-3)] md:text-[0.98rem]"
           >
             {[
-              'A Playwright bot that logs into the InDesk portal every day, exports two reports and writes them into Google Sheets unattended.',
-              'An 817-line Apps Script behind a dashboard built on 9,090 rows of outstanding dues, across 14 regions and 4 zones.',
-              'An .xlsx reader and writer with no dependencies at all — written on Node’s built-in zlib, because an .xlsx is a zip of XML.',
+              'The daily portal round now runs on its own — log in, pull two reports, file them in Google Sheets. Fifteen minutes a day, back.',
+              'The dues dashboard the team opens every morning: 9,090 rows across 14 regions and 4 zones, in one place instead of five workbooks.',
+              'Merging customer statements was a full day of copying. It is 30 seconds now, and the tool checks every sheet adds up before it hands anything back.',
             ].map((line) => (
               <li key={line} className="relative pl-5">
                 <span

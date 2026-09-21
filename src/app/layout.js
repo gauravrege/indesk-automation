@@ -39,11 +39,11 @@ export const metadata = {
   metadataBase: new URL("https://indesk-automation.vercel.app"),
   title: "Gaurav Rege — Automation Engineer Intern",
   description:
-    "Weekly engineering log of an automation internship, July to September 2026: a Playwright bot for the InDesk portal, an 817-line Apps Script behind a 9,090-row dues dashboard, and a dependency-free .xlsx consolidator.",
+    "Weekly log of an automation internship, July to September 2026. Ten tools that took the manual work out of everyday office jobs: a portal bot that runs on its own, a dues dashboard over 9,090 rows, and a statement merger that turns a day of copying into 30 seconds.",
   openGraph: {
     title: "Gaurav Rege — Automation Engineer Intern",
     description:
-      "Ten automation tools in ten weeks: a Playwright portal bot, an Apps Script dues dashboard over 9,090 rows, and a dependency-free .xlsx consolidator.",
+      "Ten tools in eleven weeks, each one replacing a job done by hand: a portal bot that runs unattended, a dues dashboard over 9,090 rows, and a day of statement copying cut to 30 seconds.",
     type: "website",
   },
 };

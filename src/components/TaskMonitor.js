@@ -9,25 +9,33 @@ const tasks = [
   {
     id: 1,
     state: 'Active',
-    title: 'Statement consolidation rollout',
+    title: 'Airline GST invoices, handed over',
     description:
-      'Delivered in week 09 and in use. Sheets are grouped by column layout and the most common layout wins, so anything shaped differently is skipped by name. Next: the branch statement layouts currently being skipped that way.',
+      'Week 11. Reads invoices from 13 airlines, PDF or HTML, and writes them all into one sheet. Anything it cannot read it names and explains, instead of filling in a zero. Next: a parser for each airline still not covered.',
     current: true,
   },
   {
     id: 2,
     state: 'Queued',
-    title: 'Invoice match across the network drives',
+    title: 'Statement layouts still being skipped',
     description:
-      'Week 10. Reads invoice numbers from a spreadsheet, strips separators, then walks every drive on the machine for PDFs whose names match. Next: point it at the shared drives instead of one PC at a time.',
+      'Week 09, delivered and in use. Sheets are grouped by how their columns are laid out and the most common layout wins, so anything shaped differently is skipped and named rather than read wrongly. Next: the branch layouts it keeps skipping.',
     current: false,
   },
   {
     id: 3,
-    state: 'Later',
-    title: 'Unattended runs for the portal bot',
+    state: 'Queued',
+    title: 'Invoice match across the shared drives',
     description:
-      'Week 04. The portal password now comes from a .env file and the Chrome session profile is out of version control. Next: put the run on a schedule, with an alert when an export comes back empty.',
+      'Week 10. Reads a list of invoice numbers from a spreadsheet, then searches every drive on the machine for the PDFs that match. Next: point it at the shared drives instead of one PC at a time.',
+    current: false,
+  },
+  {
+    id: 4,
+    state: 'Later',
+    title: 'Put the portal bot on a schedule',
+    description:
+      'Week 04. The daily portal round runs on its own now. Next: give it a fixed time to run, and an alert when an export comes back empty.',
     current: false,
   },
 ];
@@ -44,14 +52,16 @@ export default function TaskMonitor() {
           className="mb-14 flex items-end justify-between gap-6 border-b border-[var(--hair)] pb-6"
         >
           <div>
-            <p className="eyebrow mb-5">As of 12 September 2026</p>
+            <p className="eyebrow mb-5">As of 21 September 2026</p>
             <Decode
               text="In progress"
               as="h2"
               className="font-display type-big block text-[var(--ink)]"
             />
           </div>
-          <p className="eyebrow hidden shrink-0 sm:block">03 open</p>
+          <p className="eyebrow hidden shrink-0 sm:block">
+            {String(tasks.length).padStart(2, '0')} open
+          </p>
         </motion.div>
 
         <ul>

@@ -9,37 +9,39 @@ const EASE = [0.22, 1, 0.36, 1];
 /* Every figure here is traceable to a specific week's log — the `note` says
    which. Do not add a number that cannot be pointed at.
    ("15+ hours saved weekly" and "100% reconciled" used to sit in this list.
-   Neither appears anywhere in the logs or the code, so both are gone.) */
+   Neither appears anywhere in the logs or the code, so both are gone.)
+   The count is 10 tools over 11 logged weeks: week 05 is this site, which is
+   not a tool. Keep that stated in the note or the two numbers read as a slip. */
 const impactMetrics = [
   {
     value: 10, suffix: '',
-    label: 'Tools shipped',
-    note: 'Weeks 01–10, July to September 2026',
+    label: 'Tools made',
+    note: 'Over 11 logged weeks, July to September 2026 · week 05 is this site, not a tool',
   },
   {
     value: 9090, suffix: '',
     label: 'Rows behind the dues dashboard',
-    note: 'The InDesk outstanding report — 14 regions, 4 zones · weeks 01–02',
+    note: 'Outstanding dues across 14 regions and 4 zones, in one place · weeks 01–02',
   },
   {
     value: 10000, suffix: '+',
-    label: 'Transaction rows per run',
-    note: 'Customer statements merged in a single pass · week 09',
-  },
-  {
-    value: 40, suffix: '+',
-    label: 'Customer sheets consolidated',
-    note: 'One sheet per customer, spread across several workbooks · week 09',
+    label: 'Rows merged in one run',
+    note: '40+ customer sheets pulled into a single table · week 09',
   },
   {
     value: 30, suffix: 's',
     label: 'Replaces a full day of copying',
-    note: 'Statement consolidation, previously done by hand · week 09',
+    note: 'Statements that used to be merged by hand, one sheet at a time · week 09',
   },
   {
     value: 15, suffix: 'min',
     label: 'Of daily portal work removed',
-    note: 'Log in, export, filter, paste — now unattended · week 04',
+    note: 'Log in, export, filter, paste — now runs on its own · week 04',
+  },
+  {
+    value: 13, suffix: '',
+    label: 'Airline invoice layouts read',
+    note: '141 GST invoices read in under 2 seconds, PDF and HTML · week 11',
   },
 ];
 
@@ -55,14 +57,14 @@ export default function ImpactDashboard() {
           className="mb-14 flex items-end justify-between gap-6 border-b border-[var(--hair)] pb-6 md:mb-18"
         >
           <div>
-            <p className="eyebrow mb-5">Sourced from the logs below</p>
+            <p className="eyebrow mb-5">Every number comes from a log below</p>
             <Decode
               text="The numbers"
               as="h2"
               className="font-display type-big block text-[var(--ink)]"
             />
           </div>
-          <p className="eyebrow hidden shrink-0 sm:block">Weeks 01–10</p>
+          <p className="eyebrow hidden shrink-0 sm:block">Weeks 01–11</p>
         </motion.div>
 
         <ul>
@@ -98,13 +100,11 @@ export default function ImpactDashboard() {
           transition={{ duration: 1, ease: EASE }}
           className="mt-14 max-w-3xl text-[0.98rem] leading-[1.8] text-[var(--ink-3)] md:text-[1.05rem]"
         >
-          Each figure comes from the log it sits next to. The statement tool also
-          checks its own arithmetic on every sheet &mdash;{' '}
-          <span className="font-mono text-[0.88em] text-[var(--flare-2)]">
-            Opening Bal. + sum(Net Amount)
-          </span>{' '}
-          has to equal the total printed on that sheet, or the run fails rather than
-          quietly handing back a short table.
+          Every figure here comes from the log it sits next to. The tools check
+          their own work as well: the statement tool adds up each sheet and compares
+          it to the total printed on it, and the invoice tool does the same on every
+          row. When the two do not agree, the run says so and names the file, rather
+          than quietly handing back a number nobody can trust.
         </motion.p>
       </div>
     </section>

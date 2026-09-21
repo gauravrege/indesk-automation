@@ -68,10 +68,10 @@ export default async function Home() {
           duration={48}
           items={[
             "Every push rebuilds this page",
-            "Ten weeks logged",
-            "Reconciled to the row",
-            "Zero-dependency xlsx",
-            "Unattended runs",
+            "Eleven weeks logged",
+            "Checked row by row",
+            "Excel written from scratch",
+            "Runs on its own",
           ]}
         />
 
@@ -86,8 +86,8 @@ export default async function Home() {
             "Playwright",
             "Google Apps Script",
             "Sheets API",
-            "PDF parsing",
-            "Statement reconciliation",
+            "Reading PDFs",
+            "Statements that add up",
             "Build it once, run it forever",
           ]}
         />
