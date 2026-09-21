@@ -9,7 +9,16 @@ const EASE = [0.22, 1, 0.36, 1];
 /* Every figure here is traceable to a specific week's log — the `note` says
    which. Do not add a number that cannot be pointed at.
    ("15+ hours saved weekly" and "100% reconciled" used to sit in this list.
-   Neither appears anywhere in the logs or the code, so both are gone.)
+   Neither appears anywhere in the logs or the code, so both are gone. There is
+   still no aggregate hours-saved figure here for the same reason — the saving
+   is stated per tool, where it can be checked.)
+
+   The dues dashboard is deliberately absent: that project is not finished, so
+   it does not get to be a headline number. Its 9,090-row figure was here.
+
+   Rows are mentioned once, on purpose. The rest of the list is time and
+   hand-work removed, which is what these tools are actually for.
+
    The count is 10 tools over 11 logged weeks: week 05 is this site, which is
    not a tool. Keep that stated in the note or the two numbers read as a slip. */
 const impactMetrics = [
@@ -19,29 +28,29 @@ const impactMetrics = [
     note: 'Over 11 logged weeks, July to September 2026 · week 05 is this site, not a tool',
   },
   {
-    value: 9090, suffix: '',
-    label: 'Rows behind the dues dashboard',
-    note: 'Outstanding dues across 14 regions and 4 zones, in one place · weeks 01–02',
-  },
-  {
-    value: 10000, suffix: '+',
-    label: 'Rows merged in one run',
-    note: '40+ customer sheets pulled into a single table · week 09',
-  },
-  {
     value: 30, suffix: 's',
     label: 'Replaces a full day of copying',
-    note: 'Statements that used to be merged by hand, one sheet at a time · week 09',
+    note: 'Customer statements, merged by hand one sheet at a time until week 09',
+  },
+  {
+    value: 2, suffix: 's',
+    label: 'To read a folder of 141 invoices',
+    note: 'GST invoices from 13 airlines — an afternoon of typing before this · week 11',
   },
   {
     value: 15, suffix: 'min',
     label: 'Of daily portal work removed',
-    note: 'Log in, export, filter, paste — now runs on its own · week 04',
+    note: 'Log in, export, filter, paste — the bot now does the round on its own · week 04',
   },
   {
-    value: 13, suffix: '',
-    label: 'Airline invoice layouts read',
-    note: '141 GST invoices read in under 2 seconds, PDF and HTML · week 11',
+    value: 10000, suffix: '+',
+    label: 'Rows merged in a single run',
+    note: '40+ customer sheets pulled into one table · week 09',
+  },
+  {
+    value: 3, suffix: '',
+    label: 'Tools that prove their own figures',
+    note: 'Each one checks its totals and names the file when they disagree · weeks 09, 10, 11',
   },
 ];
 
@@ -100,11 +109,13 @@ export default function ImpactDashboard() {
           transition={{ duration: 1, ease: EASE }}
           className="mt-14 max-w-3xl text-[0.98rem] leading-[1.8] text-[var(--ink-3)] md:text-[1.05rem]"
         >
-          Every figure here comes from the log it sits next to. The tools check
-          their own work as well: the statement tool adds up each sheet and compares
-          it to the total printed on it, and the invoice tool does the same on every
-          row. When the two do not agree, the run says so and names the file, rather
-          than quietly handing back a number nobody can trust.
+          Every figure here comes from the log it sits next to, and the pattern
+          behind all of them is the same one. Work that used to fill a morning or a
+          whole day &mdash; copying statement sheets together, typing invoices in one
+          by one, doing the portal round &mdash; now takes seconds. None of it is
+          faster guesswork: each tool checks its own totals, and when they do not
+          agree it stops and names the file instead of handing back a number nobody
+          can trust.
         </motion.p>
       </div>
     </section>

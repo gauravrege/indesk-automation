@@ -69,9 +69,11 @@ export default function Hero() {
             className="font-display block max-w-4xl text-[1.6rem] leading-[1.22] text-[var(--ink)] sm:text-[2.2rem] md:text-[3rem]"
           />
 
-          {/* Three real things, each with the number that shows what it was
-              worth. What the tool does for the person using it comes first;
-              how it is built is the stack section's job, not this one. */}
+          {/* Three finished tools, each with the hand-work it took away and how
+              long that used to take. Nothing unfinished goes here - the dues
+              dashboard was pulled out for that reason. What the tool does for
+              the person using it comes first; how it is built is the stack
+              section's job, not this one. */}
           <motion.ul
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -80,7 +82,7 @@ export default function Hero() {
           >
             {[
               'The daily portal round now runs on its own — log in, pull two reports, file them in Google Sheets. Fifteen minutes a day, back.',
-              'The dues dashboard the team opens every morning: 9,090 rows across 14 regions and 4 zones, in one place instead of five workbooks.',
+              'A folder of airline GST invoices used to be an afternoon of typing. 141 of them are now read and written into the sheet in under two seconds.',
               'Merging customer statements was a full day of copying. It is 30 seconds now, and the tool checks every sheet adds up before it hands anything back.',
             ].map((line) => (
               <li key={line} className="relative pl-5">

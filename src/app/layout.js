@@ -39,11 +39,11 @@ export const metadata = {
   metadataBase: new URL("https://indesk-automation.vercel.app"),
   title: "Gaurav Rege — Automation Engineer Intern",
   description:
-    "Weekly log of an automation internship, July to September 2026. Ten tools that took the manual work out of everyday office jobs: a portal bot that runs on its own, a dues dashboard over 9,090 rows, and a statement merger that turns a day of copying into 30 seconds.",
+    "Weekly log of an automation internship, July to September 2026. Ten tools that take the manual work out of everyday office jobs: a day of copying statements together cut to 30 seconds, an afternoon of typing invoices cut to two, and a daily portal round that now runs on its own.",
   openGraph: {
     title: "Gaurav Rege — Automation Engineer Intern",
     description:
-      "Ten tools in eleven weeks, each one replacing a job done by hand: a portal bot that runs unattended, a dues dashboard over 9,090 rows, and a day of statement copying cut to 30 seconds.",
+      "Ten tools in eleven weeks, each one replacing a job done by hand: a full day of copying done in 30 seconds, 141 invoices read in two, and the daily portal round running unattended.",
     type: "website",
   },
 };
