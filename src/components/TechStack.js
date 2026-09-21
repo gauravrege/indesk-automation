@@ -9,7 +9,7 @@ const EASE = [0.22, 1, 0.36, 1];
 /* Only what has actually been used in the projects on this site. */
 const groups = [
   { key: 'Languages', items: ['JavaScript', 'Python'] },
-  { key: 'Web', items: ['Node.js', 'Next.js', 'Tailwind', 'Framer Motion'] },
+  { key: 'Web', items: ['Node.js', 'Next.js', 'Tailwind', 'Framer Motion', 'esbuild'] },
   { key: 'Automation', items: ['Playwright', 'Google Apps Script', 'Sheets API', 'GitHub CLI'] },
   { key: 'Data', items: ['xlsx', 'openpyxl', 'xlsxwriter', 'pyxlsb', 'pdf.js', 'ExcelJS'] },
 ];
